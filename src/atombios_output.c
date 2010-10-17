@@ -641,6 +641,7 @@ atombios_output_dig_encoder_setup(xf86OutputPtr output, int action)
 	    disp_data.v1.ucConfig = ATOM_ENCODER_CONFIG_V2_TRANSMITTER1;
 	    break;
 	case ENCODER_OBJECT_ID_INTERNAL_UNIPHY1:
+	case ENCODER_OBJECT_ID_INTERNAL_KLDSCP_LVTMA:
 	    disp_data.v1.ucConfig = ATOM_ENCODER_CONFIG_V2_TRANSMITTER2;
 	    break;
 	case ENCODER_OBJECT_ID_INTERNAL_UNIPHY2:
@@ -791,6 +792,8 @@ atombios_output_dig_transmitter_setup(xf86OutputPtr output, int action, uint8_t 
 	else if (radeon_output->active_device & (ATOM_DEVICE_DFP_SUPPORT)) {
 	    if (radeon_output->coherent_mode)
 		disp_data.v2.acConfig.fCoherentMode = 1;
+	    if (clock > 165000)
+		disp_data.v2.acConfig.fDualLinkConnector = 1;
 	}
     } else {
 	disp_data.v1.ucConfig = ATOM_TRANSMITTER_CONFIG_CLKSRC_PPLL;
@@ -1356,8 +1359,7 @@ atombios_output_dpms(xf86OutputPtr output, int mode)
     case DPMSModeOn:
 	radeon_encoder->devices |= radeon_output->active_device;
 	if (is_dig) {
-	    if (!IS_DCE4_VARIANT)
-		atombios_output_dig_transmitter_setup(output, ATOM_TRANSMITTER_ACTION_ENABLE_OUTPUT, 0, 0);
+	    atombios_output_dig_transmitter_setup(output, ATOM_TRANSMITTER_ACTION_ENABLE_OUTPUT, 0, 0);
 	    if (((radeon_output->ConnectorType == CONNECTOR_DISPLAY_PORT) ||
 		 (radeon_output->ConnectorType == CONNECTOR_EDP)) &&
 		(radeon_output->MonType == MT_DP)) {
@@ -1389,8 +1391,7 @@ atombios_output_dpms(xf86OutputPtr output, int mode)
 	radeon_encoder->devices &= ~(radeon_output->active_device);
 	if (!radeon_encoder->devices) {
 	    if (is_dig) {
-		if (!IS_DCE4_VARIANT)
-		    atombios_output_dig_transmitter_setup(output, ATOM_TRANSMITTER_ACTION_DISABLE_OUTPUT, 0, 0);
+		atombios_output_dig_transmitter_setup(output, ATOM_TRANSMITTER_ACTION_DISABLE_OUTPUT, 0, 0);
 		if (((radeon_output->ConnectorType == CONNECTOR_DISPLAY_PORT) ||
 		     (radeon_output->ConnectorType == CONNECTOR_EDP)) &&
 		    (radeon_output->MonType == MT_DP)) {

@@ -1517,9 +1517,9 @@ static void RADEONInitMemoryMap(ScrnInfoPtr pScrn)
 	}
     }
     if (info->ChipFamily >= CHIP_FAMILY_R600) {
-	info->fbLocation = (info->mc_fb_location & 0xffff) << 24;
+	info->fbLocation = ((uint64_t)info->mc_fb_location & 0xffff) << 24;
     } else {
-	info->fbLocation = (info->mc_fb_location & 0xffff) << 16;
+	info->fbLocation = ((uint64_t)info->mc_fb_location & 0xffff) << 16;
     }
     /* Just disable the damn AGP apertures for now, it may be
      * re-enabled later by the DRM
@@ -1948,14 +1948,6 @@ static Bool RADEONPreInitChipType(ScrnInfoPtr pScrn)
 				/* BIOS */
     from              = X_PROBED;
     info->BIOSAddr    = info->PciInfo->biosBase & 0xfffe0000;
-    if (dev->BiosBase) {
-	xf86DrvMsg(pScrn->scrnIndex, X_INFO,
-		   "BIOS address override, using 0x%08lx instead of 0x%08lx\n",
-		   (unsigned long)dev->BiosBase,
-		   (unsigned long)info->BIOSAddr);
-	info->BIOSAddr = dev->BiosBase;
-	from           = X_CONFIG;
-    }
     if (info->BIOSAddr) {
 	xf86DrvMsg(pScrn->scrnIndex, from,
 		   "BIOS at 0x%08lx\n", (unsigned long)info->BIOSAddr);
@@ -3996,7 +3988,7 @@ void RADEONRestoreMemMapRegisters(ScrnInfoPtr pScrn,
 					    restore->mc_agp_location,
 					    restore->mc_agp_location_hi);
 
-	    OUTREG(R600_HDP_NONSURFACE_BASE, (restore->mc_fb_location << 16) & 0xff0000);
+	    OUTREG(R600_HDP_NONSURFACE_BASE, (restore->mc_fb_location & 0xffff) << 16);
 
 	}
     } else if (IS_AVIVO_VARIANT) {
@@ -4218,9 +4210,9 @@ static void RADEONAdjustMemMapRegisters(ScrnInfoPtr pScrn, RADEONSavePtr save)
 	info->mc_fb_location = fb;
 	info->mc_agp_location = agp;
 	if (info->ChipFamily >= CHIP_FAMILY_R600)
-	    info->fbLocation = (info->mc_fb_location & 0xffff) << 24;
+	    info->fbLocation = ((uint64_t)info->mc_fb_location & 0xffff) << 24;
 	else
-	    info->fbLocation = (info->mc_fb_location & 0xffff) << 16;
+	    info->fbLocation = ((uint64_t)info->mc_fb_location & 0xffff) << 16;
 
 	info->accel_state->dst_pitch_offset =
 	    (((pScrn->displayWidth * info->CurrentLayout.pixel_bytes / 64)
