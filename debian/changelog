@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:6.13.2-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Cyril Brulebois <kibi@debian.org>  Sun, 17 Oct 2010 22:04:16 +0200
+
 xserver-xorg-video-ati (1:6.13.1-2) unstable; urgency=low
 
   * Make libudev-dev build dependencies linux-any.
