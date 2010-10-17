@@ -1,3 +1,165 @@
+commit 042037e485396981cf4a420c247104ba5d016ca0
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu Oct 14 17:00:51 2010 -0400
+
+    evergreen: requires same cursor fix as avivo chips
+
+commit 0f37458c253aec46d98db6661c4def711df8fc17
+Author: Adam Jackson <ajax@redhat.com>
+Date:   Thu Oct 14 14:37:34 2010 -0400
+
+    Don't allow the config file to override BIOS location
+    
+    Signed-off-by: Adam Jackson <ajax@redhat.com>
+
+commit 2918df3a312fc600e83f84c298b9653d2eb3a8d5
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed Oct 13 17:16:04 2010 -0400
+
+    evergreen: increase XV_CRTC Xv attribute range
+    
+    Cover all 6 possible crtcs.
+
+commit 0d1f9fd03d0196dda5c1ce34b2e68b007c1874f2
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Sun Oct 10 12:06:22 2010 -0400
+
+    DCE3+: UMS modesetting fixes
+    
+    - add mising LVTMA case statement for DCE3.0 dig encoder
+    - some DCE4 systems have EN/DISABLE_OUTPUT actions
+
+commit acf4024aa0ef192355b2bd8281507b1c2e6b7de4
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri Oct 8 16:30:36 2010 -0400
+
+    ATOM DDC fixes for UMS
+    
+    - Header size was already subtraced from table size
+    - Only hw capable ddc pads are shared with aux
+
+commit 74fd2b91477106a26a2d9fb4b11c885910996041
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu Oct 7 17:33:00 2010 -0400
+
+    DCE3.2 UMS: fix duallink
+    
+    Should fix:
+    https://bugs.freedesktop.org/show_bug.cgi?id=30686
+
+commit 8c544272f218fd8bd93a898b96afedc2498b27bb
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu Oct 7 17:25:47 2010 -0400
+
+    fix the non-kms build
+    
+    Should fix:
+    https://bugs.freedesktop.org/show_bug.cgi?id=30685
+
+commit 81360adffb2a66b9a95a38671f9227a9718c9841
+Author: Oldřich Jedlička <oldium.pro@seznam.cz>
+Date:   Mon Sep 6 21:14:52 2010 +0200
+
+    radeon: proper DRI2 pending events handling when client gone. (v6)
+    
+    Properly handle asynchronous DRI2 events for disconnected clients.
+    Track client's pending requests and mark them as invalid when the
+    client disconnects.
+    
+    This is based on the version from Alban Browaeys in bug #29065.
+    
+    v1 (Alban Browaeys): Based upon a detailed explanation from Oldřich
+    Jedlička and comments from Christopher James Halse Rogers.
+    on http://lists.x.org/archives/xorg-driver-ati/2010-August/016780.html .
+    
+    v2: Updated version to apply on master. Removed unnecessary
+    client_index field from _DRI2FrameEvent. Added freeing/removing from
+    list to failed paths of radeon_dri2_schedule_wait_msc and
+    radeon_dri2_schedule_swap.
+    
+    v3: Adopt to older xorg-server that doesn't have dixRegisterPrivateKey.
+    
+    v4: Conditional include of list.h, unreachable return removed.
+    
+    v5: Distribute list.h as xorg_list.h, remove xorg-server version check.
+    Use the version from xorg-server when available (checked in
+    configure.ac).
+    
+    v6: Removed xorg_list.h, made DRI2 scheduling features dependent on
+    list.h presence.
+
+commit adee138f007e26307f1aab7f8fe066150c12e55d
+Author: Jesse Adkins <jesserayadkins@gmail.com>
+Date:   Tue Sep 28 13:29:50 2010 -0700
+
+    Purge cvs tags.
+    
+    Signed-off-by: Jesse Adkins <jesserayadkins@gmail.com>
+    Signed-off-by: Alan Coopersmith <alan.coopersmith@oracle.com>
+
+commit f1bf9cbb471d60ee4b0422bc4e896e3b86f4d75f
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed Oct 6 11:44:42 2010 -0400
+
+    radeon: man page updates
+    
+    - tv-out is not supported on carding using
+    the rage theatre chip for tv-out
+    - add evergreen cards to the list
+
+commit 0921ecc1c751df0dd56e0b1d0b78ab53d7164904
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Oct 4 12:34:47 2010 -0400
+
+    evergreen: use EXACreatePixmap2 if available
+
+commit 5bdb6434975584eef90eb9e5955b9c2a14b7f327
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Oct 4 12:31:51 2010 -0400
+
+    evergreen: port Karl's UTS/DFS changes to evergreen
+
+commit be8f45cbd313b68ad663f303c64edb4525b8f981
+Merge: e843faf ff5f466
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Oct 4 12:36:56 2010 -0400
+
+    Merge branch 'evergreen_accel' of git+ssh://git.freedesktop.org/git/xorg/driver/xf86-video-ati
+
+commit ff5f466e6ca0ee541a255facff6c9198976dfd52
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri Oct 1 15:46:43 2010 -0400
+
+    evergreen/dri2: fix depth allocation for depth+stencil
+    
+    evergreen uses separate allocations for depth and stencil,
+    so to handle that, create a depth buffer large enough to
+    handle both.  This is required for using the stencil
+    buffer in mesa.
+
+commit e843faf355c864beab81e74f0e39f8ad53d4c2bf
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu Sep 30 19:30:35 2010 -0400
+
+    radeon: fix fbLocation for >32 bit MC addresses
+    
+    If the fbLocation was at an address >32 bits, we'd fail.
+    Change fbLocation to uint64_t and properly cast when needed.
+
+commit 886febc882053e09294225e85b102f965041b62b
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu Sep 30 19:20:17 2010 -0400
+
+    r6xx: fix bad mask when setting up HDP_NONSURFACE_BASE
+    
+    This fails for MC addresses >32 bits
+
+commit 16589b862feb796e15dc6e471d25604a4f5e7c1c
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Sep 27 18:28:43 2010 -0400
+
+    bump version post release
+
 commit cc5005af61f45a3552f7358dc5aa711e42f5af54
 Author: Alex Deucher <alexdeucher@gmail.com>
 Date:   Mon Sep 27 18:20:53 2010 -0400
@@ -96,6 +258,12 @@ Date:   Sat Aug 21 21:44:39 2010 +1200
     radeon_bo_is_busy() may return without setting the domain out-parameter.
     If this happens, then download via a scratch GTT BO to avoid CPU VRAM read.
 
+commit e26a59e9db8067882327f872e3d2d760ce4c66f3
+Author: Mathieu Bérard <mathieu@mberard.eu>
+Date:   Thu Sep 9 19:32:38 2010 -0400
+
+    Fix NULL possible deref in evergreen_cp_wait_vline_sync
+
 commit b90cb61ccb0f4f80e0627141f223354a9371d47d
 Author: Alex Deucher <alexdeucher@gmail.com>
 Date:   Tue Sep 7 11:51:16 2010 -0400
@@ -107,6 +275,28 @@ Date:   Tue Sep 7 11:51:16 2010 -0400
     
     Should fix:
     https://bugs.freedesktop.org/show_bug.cgi?id=29591
+
+commit 7cc0d3311f23ad569af004e0e4a0e2efbac107e5
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri Sep 3 00:32:27 2010 -0400
+
+    evergreen: fix Xv
+    
+    VS const buffer offset was wrong.
+    
+    fixes:
+    https://bugs.freedesktop.org/show_bug.cgi?id=29788
+
+commit 7c6ce4e62693f446d7d3c8a86502ccc03c0e55b0
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu Sep 2 20:34:56 2010 -0400
+
+    evergreen: add additional default state
+    
+    Note, you also need a drm patch to fix the GPU hangs:
+    drm/radeon/kms/evergreen: fix gpu hangs in userspace accel code
+    
+    Signed-off-by: Alex Deucher <alexdeucher@gmail.com>
 
 commit 2b98ec1f7e931019a4ab699a56d5dfaa395946fb
 Author: Alex Deucher <alexdeucher@gmail.com>
@@ -214,6 +404,35 @@ Date:   Wed Aug 25 08:56:37 2010 +1000
     
     Signed-off-by: Dave Airlie <airlied@redhat.com>
 
+commit 141cbc283fddeb67c2a6c47a0f0f5c2aa2bfb430
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue Aug 24 18:01:05 2010 -0400
+
+    evergreen Xv: remove stray line that caused a segfault
+    
+    fixes:
+    https://bugs.freedesktop.org/show_bug.cgi?id=29788
+
+commit f170dddd3538a587f2363ef5fa10a4b484e762da
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Aug 23 18:58:12 2010 -0400
+
+    evergreen: use vbo pool for constant buffers
+
+commit eede93b057bbdddcde5da3220a3f8c6f73784a7e
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Aug 23 13:16:27 2010 -0400
+
+    radeon: move vbo data to a separate struct
+    
+    this way we can share the vbo code with const buffers
+
+commit d8abf27dbd14f5eb746c5e8b8b1436ad292d8ec6
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon Aug 23 01:31:27 2010 -0400
+
+    evergreen: fix dword counts in default state
+
 commit 5a7c9d94733a0db1d3565447acc9f0e751db5950
 Author: Alex Deucher <alexdeucher@gmail.com>
 Date:   Mon Aug 23 00:43:48 2010 -0400
@@ -224,6 +443,19 @@ Date:   Mon Aug 23 00:43:48 2010 -0400
     
     Should fix:
     https://bugs.freedesktop.org/show_bug.cgi?id=19459
+    
+    Signed-off-by: Alex Deucher <alexdeucher@gmail.com>
+
+commit 6930d2c981221757b1e11ef194809f085753a611
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri Aug 20 16:55:21 2010 -0400
+
+    Add initial EXA and Xv support for evergreen
+    
+    Based on the r6xx/r7xx code updated for evergreen.
+    Still causes GPU hangs in some cases.  We haven't
+    tracked down why yet.  Might be related to constant
+    buffer persistence.
     
     Signed-off-by: Alex Deucher <alexdeucher@gmail.com>
 
