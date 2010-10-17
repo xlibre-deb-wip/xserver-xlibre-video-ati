@@ -3,6 +3,7 @@ xserver-xorg-video-ati (1:6.13.2-1) UNRELEASED; urgency=low
   * New upstream release:
     + Fix non-KMS/non-DRI Xv column ordering on big endian systems
       (Closes: #587999).
+  * Add version to the xutils-dev build-dep, needed for new macros.
 
  -- Cyril Brulebois <kibi@debian.org>  Sun, 17 Oct 2010 22:04:16 +0200
 
