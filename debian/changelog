@@ -8,6 +8,7 @@ xserver-xorg-video-ati (1:7.2.0-1) UNRELEASED; urgency=low
   [ Julien Cristau ]
   * Get rid of modprobe config file, rely on the kernel's default config to
     enable kms.
+  * Bump debhelper compat level to 9 to enable dpkg-buildflags.
 
  -- Maarten Lankhorst <maarten.lankhorst@canonical.com>  Mon, 16 Jul 2012 14:29:26 +0200
 
