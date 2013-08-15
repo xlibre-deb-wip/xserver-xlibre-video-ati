@@ -8,7 +8,7 @@ Build-Depends:
  dh-autoreconf,
  quilt,
  pkg-config,
- xserver-xorg-dev (>= 2:1.11),
+ xserver-xorg-dev (>= 2:1.12.99.901),
  x11proto-gl-dev,
  x11proto-xext-dev,
  x11proto-core-dev,
@@ -17,12 +17,12 @@ Build-Depends:
  x11proto-fonts-dev,
  x11proto-randr-dev (>= 1.2),
  x11proto-render-dev,
- libdrm-dev (>= 2.4.33) [!hurd-i386],
+ libdrm-dev (>= 2.4.46) [!hurd-i386],
  x11proto-dri2-dev,
  x11proto-xf86dri-dev,
  libudev-dev [linux-any],
  xutils-dev (>= 1:7.5+4)
-Standards-Version: 3.9.0
+Standards-Version: 3.9.3
 Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-ati
 Vcs-Browser: http://git.debian.org/?p=pkg-xorg/driver/xserver-xorg-video-ati.git
 
