@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:7.2.0-0ubuntu5) saucy; urgency=low
+
+  * Fix the build on platforms without XMir. Hello, PPC!
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 02 Sep 2013 13:22:54 +1000
+
 xserver-xorg-video-ati (1:7.2.0-0ubuntu4) saucy; urgency=low
 
   * Update for new XMir API
