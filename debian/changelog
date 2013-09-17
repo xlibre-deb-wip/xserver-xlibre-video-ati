@@ -1,4 +1,11 @@
-xserver-xorg-video-ati (1:7.2.0-0ubuntu5) saucy; urgency=low
+xserver-xorg-video-ati (1:7.2.0-0ubuntu6) saucy; urgency=low
+
+  * Fix the build harder. This would be easier if my powerpc schroot actually
+    worked.
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Tue, 03 Sep 2013 16:34:44 +1000
+
+axserver-xorg-video-ati (1:7.2.0-0ubuntu5) saucy; urgency=low
 
   * Fix the build on platforms without XMir. Hello, PPC!
 

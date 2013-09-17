@@ -285,16 +285,18 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  static void RADEONBlockHandler_KMS(BLOCKHANDLER_ARGS_DECL)
  {
      SCREEN_PTR(arg);
-@@ -302,6 +366,8 @@
+@@ -302,6 +366,10 @@
  #ifdef RADEON_PIXMAP_SHARING
      radeon_dirty_update(pScreen);
  #endif
++#ifdef XMIR
 +    if(info->xmir)
-+    	xmir_screen_for_each_damaged_window(info->xmir, radeon_xmir_copy_to_mir);
++	xmir_screen_for_each_damaged_window(info->xmir, radeon_xmir_copy_to_mir);
++#endif
  }
  
  static void
-@@ -606,6 +672,22 @@
+@@ -606,6 +674,22 @@
  		      dev->domain, dev->bus, dev->dev, dev->func);
  #endif
  
@@ -317,7 +319,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      info->dri2.drm_fd = drmOpen("radeon", busid);
      if (info->dri2.drm_fd == -1) {
  
-@@ -835,6 +917,14 @@
+@@ -835,6 +919,14 @@
      if (!RADEONPreInitChipType_KMS(pScrn))
          goto fail;
  
@@ -332,7 +334,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      if (radeon_open_drm_master(pScrn) == FALSE) {
  	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Kernel modesetting setup failed\n");
  	goto fail;
-@@ -909,10 +999,14 @@
+@@ -909,10 +1001,14 @@
      }
  
      info->swapBuffersWait = xf86ReturnOptValBool(info->Options,
@@ -348,7 +350,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      if (drmmode_pre_init(pScrn, &info->drmmode, pScrn->bitsPerPixel / 8) == FALSE) {
  	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Kernel modesetting setup failed\n");
  	goto fail;
-@@ -922,7 +1016,10 @@
+@@ -922,7 +1018,10 @@
          pRADEONEnt->HasCRTC2 = FALSE;
      else
          pRADEONEnt->HasCRTC2 = TRUE;
@@ -360,7 +362,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      /* fix up cloning on rn50 cards
       * since they only have one crtc sometimes the xserver doesn't assign
-@@ -1122,6 +1219,11 @@
+@@ -1122,6 +1221,11 @@
      if (info->accel_state->use_vbos)
          radeon_vbo_free_lists(pScrn);
  
@@ -372,7 +374,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      drmDropMaster(info->dri2.drm_fd);
  
      drmmode_fini(pScrn, &info->drmmode);
-@@ -1150,6 +1252,21 @@
+@@ -1150,6 +1254,21 @@
      RADEONFreeRec(pScrn);
  }
  
@@ -394,7 +396,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  Bool RADEONScreenInit_KMS(SCREEN_INIT_ARGS_DECL)
  {
      ScrnInfoPtr    pScrn = xf86ScreenToScrn(pScreen);
-@@ -1157,7 +1274,7 @@
+@@ -1157,7 +1276,7 @@
      int            subPixelOrder = SubPixelUnknown;
      char*          s;
      void *front_ptr;
@@ -403,7 +405,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      pScrn->fbOffset = 0;
  
-@@ -1168,7 +1285,8 @@
+@@ -1168,7 +1287,8 @@
  			  pScrn->defaultVisual)) return FALSE;
      miSetPixmapDepths ();
  
@@ -413,7 +415,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      if (ret) {
          ErrorF("Unable to retrieve master\n");
          return FALSE;
-@@ -1185,7 +1303,8 @@
+@@ -1185,7 +1305,8 @@
  		   "failed to initialise GEM buffer manager");
  	return FALSE;
      }
@@ -423,7 +425,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      if (!info->csm)
          info->csm = radeon_cs_manager_gem_ctor(info->dri2.drm_fd);
-@@ -1309,7 +1428,10 @@
+@@ -1309,7 +1430,10 @@
      /* Cursor setup */
      miDCInitialize(pScreen, xf86GetPointerScreenFuncs());
  
@@ -435,7 +437,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  	if (RADEONCursorInit_KMS(pScreen)) {
  	}
      }
-@@ -1351,6 +1473,8 @@
+@@ -1351,6 +1475,8 @@
      info->CreateScreenResources = pScreen->CreateScreenResources;
      pScreen->CreateScreenResources = RADEONCreateScreenResources_KMS;
  
@@ -444,7 +446,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  #ifdef RADEON_PIXMAP_SHARING
      pScreen->StartPixmapTracking = PixmapStartDirtyTracking;
      pScreen->StopPixmapTracking = PixmapStopDirtyTracking;
-@@ -1385,13 +1509,13 @@
+@@ -1385,13 +1511,13 @@
  {
      SCRN_INFO_PTR(arg);
      RADEONInfoPtr  info  = RADEONPTR(pScrn);
@@ -461,7 +463,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      if (ret)
  	ErrorF("Unable to retrieve master\n");
      info->accel_state->XInited3D = FALSE;
-@@ -1399,7 +1523,9 @@
+@@ -1399,7 +1525,9 @@
  
      pScrn->vtSema = TRUE;
  
@@ -472,7 +474,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  	return FALSE;
  
      return TRUE;
-@@ -1414,7 +1540,8 @@
+@@ -1414,7 +1542,8 @@
      xf86DrvMsgVerb(pScrn->scrnIndex, X_INFO, RADEON_LOGLEVEL_DEBUG,
  		   "RADEONLeaveVT_KMS\n");
  
@@ -482,7 +484,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      xf86RotateFreeShadow(pScrn);
  
-@@ -1540,6 +1667,7 @@
+@@ -1540,6 +1669,7 @@
  		}
  		info->front_surface = surface;
  	}
