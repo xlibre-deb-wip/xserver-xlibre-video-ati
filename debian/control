@@ -22,6 +22,7 @@ Build-Depends:
  x11proto-dri2-dev,
  x11proto-xf86dri-dev,
  libudev-dev [linux-any],
+ libglamor-dev,
  xutils-dev (>= 1:7.5+4)
 Standards-Version: 3.9.3
 Vcs-Git: git://git.debian.org/git/pkg-xorg/driver/xserver-xorg-video-ati
@@ -33,6 +34,7 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${xviddriver:Depends},
+ xserver-xorg-glamoregl,
  xserver-xorg-video-r128 [!ia64],
  xserver-xorg-video-mach64 [!ia64],
  xserver-xorg-video-radeon
