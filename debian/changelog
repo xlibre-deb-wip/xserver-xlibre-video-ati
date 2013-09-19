@@ -1,4 +1,4 @@
-xserver-xorg-video-ati (1:7.2.0-0ubuntu7) UNRELEASED; urgency=low
+xserver-xorg-video-ati (1:7.2.0-0ubuntu7) saucy; urgency=low
 
   * control, rules: Build against libglamor, add depends on xserver-
     xorg-glamoregl. (LP: #1224718)
