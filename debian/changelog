@@ -1,3 +1,10 @@
+xserver-xorg-video-ati (1:7.2.0-0ubuntu8) saucy; urgency=low
+
+  * xmir.patch: Fix detection of linear tiling in Evergreen EXA copy path.
+    Fixes vertical-bar-corruption on some Evergreen cards (LP: #1218815)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Fri, 20 Sep 2013 11:59:52 -0400
+
 xserver-xorg-video-ati (1:7.2.0-0ubuntu7) saucy; urgency=low
 
   * control, rules: Build against libglamor, add depends on xserver-

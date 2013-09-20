@@ -628,3 +628,14 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      box.x1 = x1;
      box.x2 = x2;
      box.y1 = y1;
+--- a/src/evergreen_exa.c
++++ b/src/evergreen_exa.c
+@@ -378,7 +378,7 @@
+     if (accel_state->planemask & 0xff000000)
+ 	cb_conf.pmask |= 8; /* A */
+     cb_conf.rop = accel_state->rop;
+-    if (accel_state->dst_obj.tiling_flags == 0) {
++    if ((accel_state->dst_obj.tiling_flags & 0xff) == 0) {
+ 	cb_conf.array_mode = 0;
+ 	cb_conf.non_disp_tiling = 1;
+     }
