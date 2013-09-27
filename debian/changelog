@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:7.2.0-0ubuntu10) UNRELEASED; urgency=low
+
+  * Drop libatomic-ops-dev from build-deps.
+
+ -- Timo Aaltonen <tjaalton@ubuntu.com>  Fri, 27 Sep 2013 10:08:56 +0300
+
 xserver-xorg-video-ati (1:7.2.0-0ubuntu9) saucy; urgency=low
 
   * Build-depend on libatomic-ops-dev.
