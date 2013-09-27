@@ -1,3 +1,10 @@
+xserver-xorg-video-ati (1:7.2.0-0ubuntu9) saucy; urgency=low
+
+  * Build-depend on libatomic-ops-dev.
+  * Configure with --disable-silent-rules.
+
+ -- Matthias Klose <doko@ubuntu.com>  Thu, 26 Sep 2013 22:32:12 +0200
+
 xserver-xorg-video-ati (1:7.2.0-0ubuntu8) saucy; urgency=low
 
   * xmir.patch: Fix detection of linear tiling in Evergreen EXA copy path.
