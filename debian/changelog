@@ -1,4 +1,4 @@
-xserver-xorg-video-ati (1:7.2.0-0ubuntu10) UNRELEASED; urgency=low
+xserver-xorg-video-ati (1:7.2.0-0ubuntu10) saucy; urgency=low
 
   * Drop libatomic-ops-dev from build-deps.
   * dri2-install-client-callback-only-once.diff: Fix a crasher when
