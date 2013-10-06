@@ -1,6 +1,8 @@
 xserver-xorg-video-ati (1:7.2.0-0ubuntu10) UNRELEASED; urgency=low
 
   * Drop libatomic-ops-dev from build-deps.
+  * dri2-install-client-callback-only-once.diff: Fix a crasher when
+    closing a video player. (LP: #1232557)
 
  -- Timo Aaltonen <tjaalton@ubuntu.com>  Fri, 27 Sep 2013 10:08:56 +0300
 

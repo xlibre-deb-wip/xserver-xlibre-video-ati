@@ -1,1 +1,2 @@
 xmir.patch
+dri2-install-client-callback-only-once.diff
