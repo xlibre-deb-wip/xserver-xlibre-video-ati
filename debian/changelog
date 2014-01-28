@@ -1,9 +1,9 @@
-xserver-xorg-video-ati (1:7.3.0-1) UNRELEASED; urgency=low
+xserver-xorg-video-ati (1:7.3.0-1) unstable; urgency=low
 
   * New upstream release.
   * Explicitly disable glamor for now to prevent a FTBFS.
 
- -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 28 Jan 2014 11:49:28 +0100
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 28 Jan 2014 11:56:30 +0100
 
 xserver-xorg-video-ati (1:7.2.0-1) unstable; urgency=low
 
