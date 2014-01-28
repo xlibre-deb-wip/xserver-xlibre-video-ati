@@ -1,6 +1,9 @@
 xserver-xorg-video-ati (1:7.3.0-1ubuntu1) UNRELEASED; urgency=low
 
   * Merge from released debian-unstable.
+  * Drop upstreamed patches.
+  * Refresh xmir patch.
+  * Depend on renamed xserver-xorg-video-glamoregl.
 
  -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 28 Jan 2014 12:26:05 +0100
 
