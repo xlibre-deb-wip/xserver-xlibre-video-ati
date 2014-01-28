@@ -5,7 +5,7 @@ Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
 Uploaders: Drew Parsons <dparsons@debian.org>, Cyril Brulebois <kibi@debian.org>
 Build-Depends:
- debhelper (>= 8),
+ debhelper (>= 9),
  dh-autoreconf,
  quilt,
  pkg-config,
@@ -34,9 +34,9 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${xviddriver:Depends},
- xserver-xorg-glamoregl,
- xserver-xorg-video-r128 [!ia64],
- xserver-xorg-video-mach64 [!ia64],
+ xserver-xorg-video-glamoregl,
+ xserver-xorg-video-r128,
+ xserver-xorg-video-mach64,
  xserver-xorg-video-radeon
 Provides: ${xviddriver:Provides}
 Description: X.Org X server -- AMD/ATI display driver wrapper
@@ -60,8 +60,8 @@ Architecture: any
 Depends:
  ${misc:Depends},
  xserver-xorg-video-ati (= ${binary:Version}),
- xserver-xorg-video-mach64-dbg [!ia64],
- xserver-xorg-video-r128-dbg [!ia64],
+ xserver-xorg-video-mach64-dbg,
+ xserver-xorg-video-r128-dbg,
  xserver-xorg-video-radeon-dbg
 Section: debug
 Priority: extra

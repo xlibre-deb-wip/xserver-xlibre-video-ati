@@ -1,3 +1,10 @@
+xserver-xorg-video-ati (1:7.3.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Explicitly disable glamor for now to prevent a FTBFS.
+
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 28 Jan 2014 11:56:30 +0100
+
 xserver-xorg-video-ati (1:7.2.0-0ubuntu11) trusty; urgency=low
 
   [ Christopher James Halse Rogers ]
@@ -76,14 +83,20 @@ xserver-xorg-video-ati (1:7.2.0-0ubuntu1) saucy; urgency=low
 
  -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Wed, 07 Aug 2013 12:12:32 +0200
 
-xserver-xorg-video-ati (1:7.2.0-1) UNRELEASED; urgency=low
+xserver-xorg-video-ati (1:7.2.0-1) unstable; urgency=low
 
+  [ Maarten Lankhorst ]
   * New upstream release:
-    - KMS-only release, only works with linux-any now.
-  * Bump to build against xserver 1.13rc1
+    - KMS-only release, only works with linux-any (or recent kbsd) now.
   * Require libdrm 2.4.46
 
- -- Maarten Lankhorst <maarten.lankhorst@canonical.com>  Mon, 16 Jul 2012 14:29:26 +0200
+  [ Julien Cristau ]
+  * Get rid of modprobe config file, rely on the kernel's default config to
+    enable kms.
+  * Bump debhelper compat level to 9 to enable dpkg-buildflags.
+  * Remove useless override_dh_auto_install rule.
+
+ -- Julien Cristau <jcristau@debian.org>  Thu, 15 Aug 2013 18:26:42 +0200
 
 xserver-xorg-video-ati (1:7.1.0+git20130801.g2ae6bb1-0ubuntu4) saucy; urgency=low
 
@@ -233,6 +246,42 @@ xserver-xorg-video-ati (1:6.14.99~git20110811.g93fc084-0ubuntu1) oneiric; urgenc
     - Drop; in new upstream snapshot.
 
  -- Timo Aaltonen <tjaalton@ubuntu.com>  Thu, 11 Aug 2011 22:43:25 +0300
+
+xserver-xorg-video-ati (1:6.14.4-8) unstable; urgency=medium
+
+  * UMS: Swap bytes when uploading to pixmap for solid picture on big endian
+    host (closes: #702480).  Thanks, Michel Dänzer!
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 09 Mar 2013 12:06:14 +0100
+
+xserver-xorg-video-ati (1:6.14.4-7) unstable; urgency=medium
+
+  * mach64 and r128 are back on ia64, so re-add dependencies on them
+    (closes: #700446).
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 23 Feb 2013 13:57:52 +0100
+
+xserver-xorg-video-ati (1:6.14.4-6) unstable; urgency=low
+
+  * Update to 6.14.6, minus the Xserver 1.13 compat patches:
+    - r6xx-r9xx: force 1D tiling for buffer with height < 64
+    - Make radeon_setup_kernel_mem failures more graceful and verbose
+    - RADEONCopySwap: Fix RADEON_HOST_DATA_SWAP_16BIT case
+    - radeon: add MacModel entry for SAM440ep embedded board
+    - Fail more gracefully when drm surface manager can't be initialized
+    - radeon: avoid rounding errors in texture coords for textured xv on EG+
+    - radeon: use GB_GR and BG_RG formats for packed yuv video for r600+
+    - radeon: fix smooth startup with tiling enabled
+    - radeon: improve smooth startup fallbacks
+    - radeon: add new PCI ids
+    - Don't wait on a CRTC which has been disabled via DPMS
+    - Don't page-flip or wait on a CRTC while we're VT-switched away
+    - configure: bump libdrm_radeon requirement
+    - UMS: Fix CRTC DPMS state check
+    - Fix up displayWidth vs. virtualX confusion in radeon_setup_kernel_mem()
+    - radeon: require libdrm 2.4.36 for KMS support
+
+ -- Julien Cristau <jcristau@debian.org>  Sat, 12 Jan 2013 16:30:01 +0100
 
 xserver-xorg-video-ati (1:6.14.4-5) unstable; urgency=low
 
