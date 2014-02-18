@@ -1,8 +1,8 @@
-xserver-xorg-video-ati (1:7.3.0-1ubuntu1+build1) trusty; urgency=low
+xserver-xorg-video-ati (1:7.3.0-1ubuntu2) trusty; urgency=medium
 
-  * Rebuild against xorg 1.15.
+  * Rebuild for xorg 1.15 abi, depend on 1.15 abi glamor-egl.
 
- -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 28 Jan 2014 12:53:56 +0100
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Wed, 05 Feb 2014 09:44:48 +0000
 
 xserver-xorg-video-ati (1:7.3.0-1ubuntu1) trusty; urgency=low
 
