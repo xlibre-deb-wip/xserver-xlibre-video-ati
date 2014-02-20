@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:7.3.0-1ubuntu3) trusty; urgency=low
+
+  * Fix crash with Xorg -configure. (LP: #1278046)
+
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Thu, 20 Feb 2014 11:19:44 +0100
+
 xserver-xorg-video-ati (1:7.3.0-1ubuntu2) trusty; urgency=medium
 
   * Rebuild for xorg 1.15 abi, depend on 1.15 abi glamor-egl.
