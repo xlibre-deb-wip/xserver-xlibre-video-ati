@@ -1,0 +1,30 @@
+commit c84230d686c078aac1dc98d82153f8b02521b2e1
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Apr 25 09:17:51 2014 +0900
+
+    dri2: Handle PRIME for source buffer as well in radeon_dri2_copy_region2
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=77810
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/src/radeon_dri2.c b/src/radeon_dri2.c
+index d47b035..9a9918b 100644
+--- a/src/radeon_dri2.c
++++ b/src/radeon_dri2.c
+@@ -409,7 +409,14 @@ radeon_dri2_copy_region2(ScreenPtr pScreen,
+     dst_drawable = &dst_private->pixmap->drawable;
+ 
+     if (src_private->attachment == DRI2BufferFrontLeft) {
+-        src_drawable = drawable;
++#ifdef USE_DRI2_PRIME
++	if (drawable->pScreen != pScreen) {
++	    src_drawable = DRI2UpdatePrime(drawable, src_buffer);
++	    if (!src_drawable)
++		return;
++	} else
++#endif
++	    src_drawable = drawable;
+     }
+     if (dst_private->attachment == DRI2BufferFrontLeft) {
+ #ifdef USE_DRI2_PRIME

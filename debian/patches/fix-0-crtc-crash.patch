@@ -1,0 +1,50 @@
+commit cadb6b493942a84bfeb298751dce0dee39257a06
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Fri Feb 21 08:33:21 2014 -0500
+
+    radeon: don't install colormap handling if there are no crtcs
+    
+    Fixes a crash on cards with 0 crtcs.
+    
+    Discussion:
+    http://lists.freedesktop.org/archives/dri-devel/2014-February/054186.html
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/src/drmmode_display.c b/src/drmmode_display.c
+index 76b79d8..641e231 100644
+--- a/src/drmmode_display.c
++++ b/src/drmmode_display.c
+@@ -1939,19 +1939,23 @@ static void drmmode_load_palette(ScrnInfoPtr pScrn, int numColors,
+ 
+ Bool drmmode_setup_colormap(ScreenPtr pScreen, ScrnInfoPtr pScrn)
+ {
++    xf86CrtcConfigPtr   xf86_config = XF86_CRTC_CONFIG_PTR(pScrn);
++
+     xf86DrvMsgVerb(pScrn->scrnIndex, X_INFO, RADEON_LOGLEVEL_DEBUG,
+                   "Initializing kms color map\n");
+-    if (!miCreateDefColormap(pScreen))
+-        return FALSE;
+-    /* all radeons support 10 bit CLUTs */
+-    if (!xf86HandleColormaps(pScreen, 256, 10,
+-                             drmmode_load_palette, NULL,
+-                             CMAP_PALETTED_TRUECOLOR
++    if (xf86_config->num_crtc) {
++	if (!miCreateDefColormap(pScreen))
++	    return FALSE;
++	/* all radeons support 10 bit CLUTs */
++	if (!xf86HandleColormaps(pScreen, 256, 10,
++				 drmmode_load_palette, NULL,
++				 CMAP_PALETTED_TRUECOLOR
+ #if 0 /* This option messes up text mode! (eich@suse.de) */
+-                             | CMAP_LOAD_EVEN_IF_OFFSCREEN
++				 | CMAP_LOAD_EVEN_IF_OFFSCREEN
+ #endif
+-                             | CMAP_RELOAD_ON_MODE_SWITCH))
+-         return FALSE;
++				 | CMAP_RELOAD_ON_MODE_SWITCH))
++	    return FALSE;
++    }
+     return TRUE;
+ }
+ 

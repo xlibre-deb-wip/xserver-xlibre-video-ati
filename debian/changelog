@@ -1,3 +1,11 @@
+xserver-xorg-video-ati (1:7.3.0-1ubuntu4) UNRELEASED; urgency=low
+
+  * Add upstream patches to fix hybrid mode with prime.
+    - fix-key-initialized-crash.patch
+    - fix-0-crtc-crash.patch
+
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 29 Apr 2014 14:26:00 +0200
+
 xserver-xorg-video-ati (1:7.3.0-1ubuntu3) trusty; urgency=low
 
   * Fix crash with Xorg -configure. (LP: #1278046)

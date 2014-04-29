@@ -1,2 +1,4 @@
+fix-key-initialized-crash.patch
+fix-0-crtc-crash.patch
 fix-xorg-configure.patch
 xmir.patch
