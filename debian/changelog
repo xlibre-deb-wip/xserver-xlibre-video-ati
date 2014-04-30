@@ -1,4 +1,4 @@
-xserver-xorg-video-ati (1:7.3.0-1ubuntu4) utopic; urgency=low
+xserver-xorg-video-ati (1:7.3.0-1ubuntu3.1) trusty-proposed; urgency=medium
 
   * Add upstream patches to fix hybrid mode with prime. (LP: #1301839)
     - fix-key-initialized-crash.patch
