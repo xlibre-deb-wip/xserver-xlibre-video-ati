@@ -2,6 +2,7 @@ xserver-xorg-video-ati (1:7.3.0-2) UNRELEASED; urgency=medium
 
   * New upstream snapshot.
   * Build against xserver 1.16 rc, enable glamor acceleration.
+  * Remove Cyril from Uploaders.
 
  -- Julien Cristau <jcristau@debian.org>  Mon, 16 Jun 2014 19:20:02 +0200
 
