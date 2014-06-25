@@ -1,3 +1,9 @@
+commit 906a0ec9224146098bb4581486129d2934d36495
+Author: Maarten Lankhorst <maarten.lankhorst@canonical.com>
+Date:   Wed Jun 25 16:10:21 2014 +0200
+
+    bump version for release
+
 commit cc615d06db0332fc6e673b55632bcc7bf957b44b
 Author: Michel Dänzer <michel.daenzer@amd.com>
 Date:   Wed Jun 4 16:58:53 2014 +0900
