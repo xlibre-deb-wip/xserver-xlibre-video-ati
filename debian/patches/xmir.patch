@@ -184,7 +184,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  #endif
 --- a/src/radeon_glamor.c
 +++ b/src/radeon_glamor.c
-@@ -285,14 +285,15 @@
+@@ -297,14 +297,15 @@
  	ScrnInfoPtr scrn = xf86ScreenToScrn(screen);
  	struct radeon_surface surface;
  	struct radeon_pixmap *priv;
@@ -205,7 +205,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  		xf86DrvMsg(scrn->scrnIndex, X_ERROR,
 --- a/src/radeon_kms.c
 +++ b/src/radeon_kms.c
-@@ -220,10 +220,15 @@
+@@ -230,10 +230,15 @@
  	return FALSE;
      pScreen->CreateScreenResources = RADEONCreateScreenResources_KMS;
  
@@ -223,7 +223,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      if (info->r600_shadow_fb) {
  	pixmap = pScreen->GetScreenPixmap(pScreen);
-@@ -285,6 +290,66 @@
+@@ -295,6 +300,66 @@
  }
  #endif
  
@@ -290,7 +290,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  static void RADEONBlockHandler_KMS(BLOCKHANDLER_ARGS_DECL)
  {
      SCREEN_PTR(arg);
-@@ -302,6 +367,10 @@
+@@ -312,6 +377,10 @@
  #ifdef RADEON_PIXMAP_SHARING
      radeon_dirty_update(pScreen);
  #endif
@@ -301,30 +301,25 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  }
  
  static void
-@@ -607,6 +676,22 @@
+@@ -616,6 +685,17 @@
  		      dev->domain, dev->bus, dev->dev, dev->func);
  #endif
  
 +    if (xorgMir) {
-+	info->dri2.drm_fd = xmir_get_drm_fd(busid);
++        fd = xmir_get_drm_fd(busid);
 +
-+	if (info->dri2.drm_fd < 0) {
-+	    xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
-+		       "[drm] Failed to retrieve DRM device %s from Mir\n",
-+		       busid);
-+	    free(busid);
-+	    return FALSE;
-+	}
-+	free(busid);
-+	/* TODO: Work out what to do about the crazy multihead involved in
-+	   pRADEONEnt->fd */
-+	goto out;
++        if (fd == -1)
++            xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
++                       "[drm] Failed to retrieve DRM device %s from Mir\n",
++                       busid);
++        free(busid);
++        return fd;
 +    }
 +
-     info->dri2.drm_fd = drmOpen(NULL, busid);
-     if (info->dri2.drm_fd == -1) {
- 
-@@ -839,6 +924,14 @@
+     fd = drmOpen(NULL, busid);
+     if (fd == -1)
+ 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR,
+@@ -866,6 +946,14 @@
      if (!RADEONPreInitChipType_KMS(pScrn))
          goto fail;
  
@@ -339,7 +334,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      if (radeon_open_drm_master(pScrn) == FALSE) {
  	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Kernel modesetting setup failed\n");
  	goto fail;
-@@ -913,10 +1006,14 @@
+@@ -940,10 +1028,14 @@
      }
  
      info->swapBuffersWait = xf86ReturnOptValBool(info->Options,
@@ -355,7 +350,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
      if (drmmode_pre_init(pScrn, &info->drmmode, pScrn->bitsPerPixel / 8) == FALSE) {
  	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Kernel modesetting setup failed\n");
  	goto fail;
-@@ -926,7 +1023,10 @@
+@@ -953,7 +1045,10 @@
          pRADEONEnt->HasCRTC2 = FALSE;
      else
          pRADEONEnt->HasCRTC2 = TRUE;
@@ -367,9 +362,28 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      /* fix up cloning on rn50 cards
       * since they only have one crtc sometimes the xserver doesn't assign
-@@ -1126,6 +1226,11 @@
-     if (info->accel_state->use_vbos)
-         radeon_vbo_free_lists(pScrn);
+@@ -1131,7 +1226,7 @@
+ {
+     RADEONInfoPtr  info  = RADEONPTR(pScrn);
+     RADEONEntPtr pRADEONEnt = RADEONEntPriv(pScrn);
+-    int err;
++    int err = 0;
+ 
+ #ifdef XF86_PDEV_SERVER_FD
+     if (pRADEONEnt->platform_dev &&
+@@ -1139,7 +1234,8 @@
+         return TRUE;
+ #endif
+ 
+-    err = drmSetMaster(info->dri2.drm_fd);
++    if (!xorgMir)
++        err = drmSetMaster(info->dri2.drm_fd);
+     if (err)
+         ErrorF("Unable to retrieve master\n");
+ 
+@@ -1157,6 +1253,11 @@
+         return;
+ #endif
  
 +#ifdef XMIR
 +    if (info->xmir) {
@@ -377,9 +391,9 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
 +    } else
 +#endif
      drmDropMaster(info->dri2.drm_fd);
+ }
  
-     drmmode_fini(pScrn, &info->drmmode);
-@@ -1154,6 +1259,21 @@
+@@ -1214,6 +1315,21 @@
      RADEONFreeRec(pScrn);
  }
  
@@ -401,26 +415,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  Bool RADEONScreenInit_KMS(SCREEN_INIT_ARGS_DECL)
  {
      ScrnInfoPtr    pScrn = xf86ScreenToScrn(pScreen);
-@@ -1161,7 +1281,7 @@
-     int            subPixelOrder = SubPixelUnknown;
-     char*          s;
-     void *front_ptr;
--    int ret;
-+    int ret = 0;
- 
-     pScrn->fbOffset = 0;
- 
-@@ -1172,7 +1292,8 @@
- 			  pScrn->defaultVisual)) return FALSE;
-     miSetPixmapDepths ();
- 
--    ret = drmSetMaster(info->dri2.drm_fd);
-+    if (!xorgMir)
-+	ret = drmSetMaster(info->dri2.drm_fd);
-     if (ret) {
-         ErrorF("Unable to retrieve master\n");
-         return FALSE;
-@@ -1189,7 +1310,8 @@
+@@ -1246,7 +1362,8 @@
  		   "failed to initialise GEM buffer manager");
  	return FALSE;
      }
@@ -430,7 +425,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  
      if (!info->csm)
          info->csm = radeon_cs_manager_gem_ctor(info->dri2.drm_fd);
-@@ -1313,7 +1435,10 @@
+@@ -1370,7 +1487,10 @@
      /* Cursor setup */
      miDCInitialize(pScreen, xf86GetPointerScreenFuncs());
  
@@ -442,7 +437,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  	if (RADEONCursorInit_KMS(pScreen)) {
  	}
      }
-@@ -1355,6 +1480,8 @@
+@@ -1412,6 +1532,8 @@
      info->CreateScreenResources = pScreen->CreateScreenResources;
      pScreen->CreateScreenResources = RADEONCreateScreenResources_KMS;
  
@@ -451,24 +446,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  #ifdef RADEON_PIXMAP_SHARING
      pScreen->StartPixmapTracking = PixmapStartDirtyTracking;
      pScreen->StopPixmapTracking = PixmapStopDirtyTracking;
-@@ -1389,13 +1516,13 @@
- {
-     SCRN_INFO_PTR(arg);
-     RADEONInfoPtr  info  = RADEONPTR(pScrn);
--    int ret;
-+    int ret = 0;
- 
-     xf86DrvMsgVerb(pScrn->scrnIndex, X_INFO, RADEON_LOGLEVEL_DEBUG,
- 		   "RADEONEnterVT_KMS\n");
- 
--
--    ret = drmSetMaster(info->dri2.drm_fd);
-+    if (!xorgMir)
-+	ret = drmSetMaster(info->dri2.drm_fd);
-     if (ret)
- 	ErrorF("Unable to retrieve master\n");
-     info->accel_state->XInited3D = FALSE;
-@@ -1403,7 +1530,9 @@
+@@ -1457,7 +1579,9 @@
  
      pScrn->vtSema = TRUE;
  
@@ -479,17 +457,7 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
  	return FALSE;
  
      return TRUE;
-@@ -1418,7 +1547,8 @@
-     xf86DrvMsgVerb(pScrn->scrnIndex, X_INFO, RADEON_LOGLEVEL_DEBUG,
- 		   "RADEONLeaveVT_KMS\n");
- 
--    drmDropMaster(info->dri2.drm_fd);
-+    if (!xorgMir)
-+	drmDropMaster(info->dri2.drm_fd);
- 
-     xf86RotateFreeShadow(pScrn);
- 
-@@ -1544,6 +1674,7 @@
+@@ -1598,6 +1722,7 @@
  		}
  		info->front_surface = surface;
  	}
@@ -578,9 +546,9 @@ Date:   Mon Jul 22 17:02:17 2013 +1000
 +#endif
 +
  	    return TRUE;
- 	default:
- 	    return FALSE;
-@@ -221,14 +266,20 @@
+ #if XORG_VERSION_CURRENT > XORG_VERSION_NUMERIC(1,15,99,0,0)
+ 	case SUPPORTS_SERVER_FDS:
+@@ -225,14 +270,20 @@
      if (!dev->pdev)
  	return FALSE;
  
