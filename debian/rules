@@ -3,7 +3,7 @@
 XXV=xserver-xorg-video
 
 override_dh_auto_configure:
-	dh_auto_configure --builddirectory=build/ -- --libdir=/usr/lib --enable-glamor
+	dh_auto_configure --builddirectory=build/ -- --libdir=/usr/lib
 
 # Kill *.la files, and forget no-one:
 override_dh_install:

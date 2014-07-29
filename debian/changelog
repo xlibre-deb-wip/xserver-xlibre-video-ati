@@ -1,3 +1,15 @@
+xserver-xorg-video-ati (1:7.4.0-2) unstable; urgency=medium
+
+  * Upload to unstable.
+
+ -- Julien Cristau <jcristau@debian.org>  Tue, 08 Jul 2014 21:06:48 +0200
+
+xserver-xorg-video-ati (1:7.4.0-1+exp1) experimental; urgency=low
+
+  * Rebuild against xorg 1.16 rc.
+
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Wed, 25 Jun 2014 16:43:52 +0200
+
 xserver-xorg-video-ati (1:7.4.0-1ubuntu1) UNRELEASED; urgency=low
 
   * Merge with released debian unstable.
@@ -11,6 +23,15 @@ xserver-xorg-video-ati (1:7.4.0-1) unstable; urgency=low
   * Bump libdrm-dev requirement to 2.4.54.
 
  -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Wed, 25 Jun 2014 16:35:44 +0200
+
+xserver-xorg-video-ati (1:7.3.0-2) experimental; urgency=medium
+
+  * New upstream snapshot.
+  * Build against xserver 1.16 rc, enable glamor acceleration.
+  * Remove Cyril from Uploaders.
+  * Bump libdrm build-dep to 2.4.54 per configure.ac.
+
+ -- Julien Cristau <jcristau@debian.org>  Mon, 16 Jun 2014 19:27:22 +0200
 
 xserver-xorg-video-ati (1:7.3.0-1ubuntu4) utopic; urgency=low
 
