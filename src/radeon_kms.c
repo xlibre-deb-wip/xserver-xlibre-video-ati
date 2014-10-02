@@ -333,9 +333,6 @@ static Bool RADEONIsFastFBWorking(ScrnInfoPtr pScrn)
     int r;
     uint32_t tmp = 0;
 
-#ifndef RADEON_INFO_FASTFB_WORKING
-#define RADEON_INFO_FASTFB_WORKING 0x14
-#endif
     memset(&ginfo, 0, sizeof(ginfo));
     ginfo.request = RADEON_INFO_FASTFB_WORKING;
     ginfo.value = (uintptr_t)&tmp;
@@ -355,9 +352,6 @@ static Bool RADEONIsFusionGARTWorking(ScrnInfoPtr pScrn)
     int r;
     uint32_t tmp;
 
-#ifndef RADEON_INFO_FUSION_GART_WORKING
-#define RADEON_INFO_FUSION_GART_WORKING 0x0c
-#endif
     memset(&ginfo, 0, sizeof(ginfo));
     ginfo.request = RADEON_INFO_FUSION_GART_WORKING;
     ginfo.value = (uintptr_t)&tmp;
@@ -377,13 +371,6 @@ static Bool RADEONIsAccelWorking(ScrnInfoPtr pScrn)
     int r;
     uint32_t tmp;
 
-#ifndef RADEON_INFO_ACCEL_WORKING
-#define RADEON_INFO_ACCEL_WORKING 0x03
-#endif
-#ifndef RADEON_INFO_ACCEL_WORKING2
-#define RADEON_INFO_ACCEL_WORKING2 0x05
-#endif
-
     memset(&ginfo, 0, sizeof(ginfo));
     if (info->dri2.pKernelDRMVersion->version_minor >= 5)
 	ginfo.request = RADEON_INFO_ACCEL_WORKING2;
@@ -400,8 +387,12 @@ static Bool RADEONIsAccelWorking(ScrnInfoPtr pScrn)
         }
         return FALSE;
     }
-    if (tmp)
+    if (info->ChipFamily == CHIP_FAMILY_HAWAII) {
+        if (tmp == 2 || tmp == 3)
+            return TRUE;
+    } else if (tmp) {
         return TRUE;
+    }
     return FALSE;
 }
 
@@ -499,8 +490,7 @@ static Bool RADEONPreInitAccel_KMS(ScrnInfoPtr pScrn)
 	info->is_fast_fb = TRUE;
     }
 
-    if (!xf86ReturnOptValBool(info->Options, OPTION_ACCEL,
-			     info->ChipFamily != CHIP_FAMILY_HAWAII) ||
+    if (!xf86ReturnOptValBool(info->Options, OPTION_ACCEL, TRUE) ||
 	(!RADEONIsAccelWorking(pScrn))) {
 	xf86DrvMsg(pScrn->scrnIndex, X_INFO,
 		   "GPU accel disabled or not working, using shadowfb for KMS\n");
@@ -594,7 +584,9 @@ static Bool RADEONPreInitChipType_KMS(ScrnInfoPtr pScrn)
 static int radeon_get_drm_master_fd(ScrnInfoPtr pScrn)
 {
     RADEONInfoPtr  info   = RADEONPTR(pScrn);
+#ifdef XF86_PDEV_SERVER_FD
     RADEONEntPtr pRADEONEnt = RADEONEntPriv(pScrn);
+#endif
     struct pci_device *dev = info->PciInfo;
     char *busid;
     int fd;
@@ -679,10 +671,6 @@ static Bool r600_get_tile_config(ScrnInfoPtr pScrn)
 
     if (info->ChipFamily < CHIP_FAMILY_R600)
 	return FALSE;
-
-#ifndef RADEON_INFO_TILING_CONFIG
-#define RADEON_INFO_TILING_CONFIG 0x6
-#endif
 
     memset(&ginfo, 0, sizeof(ginfo));
     ginfo.request = RADEON_INFO_TILING_CONFIG;
@@ -1130,7 +1118,9 @@ static Bool RADEONSaveScreen_KMS(ScreenPtr pScreen, int mode)
 static Bool radeon_set_drm_master(ScrnInfoPtr pScrn)
 {
     RADEONInfoPtr  info  = RADEONPTR(pScrn);
+#ifdef XF86_PDEV_SERVER_FD
     RADEONEntPtr pRADEONEnt = RADEONEntPriv(pScrn);
+#endif
     int err;
 
 #ifdef XF86_PDEV_SERVER_FD
@@ -1149,9 +1139,9 @@ static Bool radeon_set_drm_master(ScrnInfoPtr pScrn)
 static void radeon_drop_drm_master(ScrnInfoPtr pScrn)
 {
     RADEONInfoPtr  info  = RADEONPTR(pScrn);
+#ifdef XF86_PDEV_SERVER_FD
     RADEONEntPtr pRADEONEnt = RADEONEntPriv(pScrn);
 
-#ifdef XF86_PDEV_SERVER_FD
     if (pRADEONEnt->platform_dev &&
             (pRADEONEnt->platform_dev->flags & XF86_PDEV_SERVER_FD))
         return;
@@ -1219,7 +1209,7 @@ Bool RADEONScreenInit_KMS(SCREEN_INIT_ARGS_DECL)
     ScrnInfoPtr    pScrn = xf86ScreenToScrn(pScreen);
     RADEONInfoPtr  info  = RADEONPTR(pScrn);
     int            subPixelOrder = SubPixelUnknown;
-    char*          s;
+    const char *s;
     void *front_ptr;
 
     pScrn->fbOffset = 0;
