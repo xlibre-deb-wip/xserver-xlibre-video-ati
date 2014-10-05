@@ -1,4 +1,4 @@
-xserver-xorg-video-ati (1:7.5.0-1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:7.5.0-1) unstable; urgency=medium
 
   [ Andreas Boll ]
   * New upstream release.
@@ -8,7 +8,7 @@ xserver-xorg-video-ati (1:7.5.0-1) UNRELEASED; urgency=medium
   * Let uscan verify tarball signatures.
   * Disable silent build rules.
 
- -- Andreas Boll <andreas.boll.dev@gmail.com>  Thu, 02 Oct 2014 17:13:15 +0200
+ -- Julien Cristau <jcristau@debian.org>  Sun, 05 Oct 2014 18:53:26 +0200
 
 xserver-xorg-video-ati (1:7.4.0-2) unstable; urgency=medium
 
