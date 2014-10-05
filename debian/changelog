@@ -1,7 +1,11 @@
 xserver-xorg-video-ati (1:7.5.0-1) UNRELEASED; urgency=medium
 
+  [ Andreas Boll ]
   * New upstream release.
   * Bump libdrm-dev build-dep to 2.4.58.
+
+  [ Julien Cristau ]
+  * Let uscan verify tarball signatures.
 
  -- Andreas Boll <andreas.boll.dev@gmail.com>  Thu, 02 Oct 2014 17:13:15 +0200
 
