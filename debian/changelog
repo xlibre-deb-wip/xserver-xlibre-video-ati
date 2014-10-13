@@ -1,9 +1,9 @@
-xserver-xorg-video-ati (1:7.4.0-2ubuntu2) UNRELEASED; urgency=low
+xserver-xorg-video-ati (1:7.4.0-2ubuntu2) utopic; urgency=low
 
   * Rebuild for xorg 1.16.
   * Remove glamor as depends, part of Xorg in 1.16.
 
- -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Tue, 29 Jul 2014 14:21:39 +0200
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Wed, 10 Sep 2014 16:57:22 +0200
 
 xserver-xorg-video-ati (1:7.4.0-2ubuntu1) utopic; urgency=medium
 
