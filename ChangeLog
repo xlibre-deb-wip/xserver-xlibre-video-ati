@@ -1,3 +1,212 @@
+commit 068a59e010ce6bfcd54f5a18cc08c55c54b8618d
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Wed Oct 1 23:38:52 2014 -0400
+
+    radeon: bump version for release
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 5fee565e420d3efbf72fdf4f63c3d5d93d8ceddb
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Wed Oct 1 23:36:31 2014 -0400
+
+    radeon: require libdrm_radeon 2.4.58 for latest SI/CI pci ids
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 56c7fb8ada4cd9cf096c6b06a8d368d286d74e68
+Author: Thomas DeRensis <tderensis@gmail.com>
+Date:   Wed Sep 10 21:20:32 2014 -0400
+
+    radeon: fix build warnings regarding const qualifier
+    
+    Signed-off-by: Thomas DeRensis <tderensis@gmail.com>
+
+commit b9a9b244336ed50d7df4f36135f875a3bb6ca948
+Author: Thomas DeRensis <tderensis@gmail.com>
+Date:   Thu Sep 4 21:45:19 2014 -0400
+
+    radeon: fix a leak in radeon_vbo_get_bo()
+    
+    The dma_bo struct was never freed in the error path. Reported by cppcheck.
+    
+    Signed-off-by: Thomas DeRensis <tderensis@gmail.com>
+    Reviewed-by: Michel Dänzer <michel.daenzer@amd.com>
+
+commit ba5fcc4d6b6eae3f2c55c6229a53d24d160789c1
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Thu Aug 21 11:32:45 2014 -0400
+
+    radeon/kms: fix mullins pci id
+    
+    strange errant change from:
+    39fef269f521c92a2a31c80447e9401bacb3797a
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit efef34930650d6d80f7b527f4cee76d9e5954ace
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Thu Aug 21 11:30:17 2014 -0400
+
+    radeon/kms: add new SI pci ids
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 39fef269f521c92a2a31c80447e9401bacb3797a
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Thu Aug 21 11:27:49 2014 -0400
+
+    radeon/kms: add new CIK pci ids
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 7dab6b2fe9cf690b0dae1c127d0374322bd8278e
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Aug 20 17:51:35 2014 +0900
+
+    Revert "glamor: Set environment variable RADEON_THREAD=0"
+    
+    This reverts commit 4b5060f357a3cb248c9359c92c1e9c42ef6434c8.
+    
+    Further testing shows that disabling the thread is only a moderate win in
+    some cases, but a much bigger loss in some other cases.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 1ff383360886c5cee1bb75abcc20675aca0336a6
+Author: Alex Deucher <alexander.deucher@amd.com>
+Date:   Tue Aug 12 12:27:12 2014 -0400
+
+    radeon: fix warnings when building against older xservers
+    
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 94202cbfbca05a503acdc1cca2f8409d141173af
+Author: Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri Aug 1 21:55:40 2014 +0200
+
+    radeon: enable hawaii accel conditionally (v3)
+    
+    Only if the kernel has the new CP firmware.
+    
+    v2: check value of ACCEL_WORKING2
+    v3 (Andreas Boll):
+     - check for value 2 or 3 of ACCEL_WORKING2
+     - update man page
+    
+    Reviewed-by: Michel Dänzer <michel.daenzer@amd.com> (v2)
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    Signed-off-by: Andreas Boll <andreas.boll.dev@gmail.com>
+
+commit 03930edd49f6b8a8d79910c7be5408b47db9649b
+Author: Andreas Boll <andreas.boll.dev@gmail.com>
+Date:   Mon Aug 4 16:23:13 2014 +0200
+
+    radeon: remove definitions already present in radeon_drm.h
+    
+    Signed-off-by: Andreas Boll <andreas.boll.dev@gmail.com>
+
+commit 91849fba0742ef61ba327e71fc3ce8f754af0a6f
+Author: Andreas Boll <andreas.boll.dev@gmail.com>
+Date:   Mon Aug 4 16:23:12 2014 +0200
+
+    radeon: drop radeon_drm.h
+    
+    Now we use libdrm's radeon_drm.h.
+    
+    Signed-off-by: Andreas Boll <andreas.boll.dev@gmail.com>
+
+commit b4658901bf1d619f8ff9b5f94344894f935ee6c8
+Author: Andreas Boll <andreas.boll.dev@gmail.com>
+Date:   Mon Aug 4 16:23:11 2014 +0200
+
+    radeon: move RADEON_TILING_{MASK, LINEAR} from radeon_drm.h to radeon.h
+    
+    This allows us to drop radeon_drm.h from xf86-video-ati and use instead
+    radeon_drm.h from libdrm.
+    
+    Signed-off-by: Andreas Boll <andreas.boll.dev@gmail.com>
+
+commit 656bae7361c1e018553ef6d6d8c9efad616a4513
+Author: Andreas Boll <andreas.boll.dev@gmail.com>
+Date:   Mon Aug 4 16:23:10 2014 +0200
+
+    radeon: drop redundant radeon_drm.h includes
+    
+    Already included via radeon.h.
+    
+    Signed-off-by: Andreas Boll <andreas.boll.dev@gmail.com>
+
+commit fbf575cb010e558a87fad0de45660738c8180896
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Jul 30 17:03:24 2014 +0900
+
+    Add Emacs .dir-local.el file
+    
+    Based on the one from the Gallium radeon winsys, but enabling tabs for
+    indentation.
+
+commit 4b5060f357a3cb248c9359c92c1e9c42ef6434c8
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Jun 19 18:27:59 2014 +0900
+
+    glamor: Set environment variable RADEON_THREAD=0
+    
+    Reviewed-by: Marek Olšák <marek.olsak@amd.com>
+
+commit 9b54caf6509a9c02dd17c9c43d6be8f7ddc98054
+Author: Hans de Goede <hdegoede@redhat.com>
+Date:   Mon Jul 28 15:55:12 2014 +0200
+
+    configure: Include xorg-server.h before glamor.h
+    
+    glamor.h cannot be included without first including xorg-server.h, this also
+    applies to including it from configure snippets.
+    
+    Without this the configure glamor checks fail on systems with the latest
+    glibc, throwing this error:
+    
+    In file included from /usr/include/xorg/misc.h:115:0,
+                     from /usr/include/xorg/screenint.h:50,
+                     from /usr/include/xorg/scrnintstr.h:50,
+                     from /usr/include/xorg/glamor.h:32,
+                     from conftest.c:61:
+    /usr/include/xorg/os.h:579:2: error: expected identifier or '(' before
+    '__exten
+     strndup(const char *str, size_t n);
+      ^
+    
+    This is caused by HAVE_STRNDUP not being set (it is set from xorg-server.h),
+    causing os.h to redefine it.
+    
+    Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+
+commit c4ae0e2cbcc0e2ebf9f13ee92d59b5120254a1dc
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Mon Jun 30 10:20:12 2014 +0900
+
+    Handle CRTC DPMS from output DPMS hooks
+    
+    This fixes at least two issues:
+    
+    The CRTC DPMS hook isn't called after a modeset, so the vertical blank
+    interrupt emulation code considered the CRTC disabled after a modeset. As
+    a side effect, page flipping was no longer used after a modeset.
+    
+    This change also makes sure the vertical blank interrupt emulation code
+    runs before the hardware CRTC is disabled and after it's enabled from the
+    output DPMS hook. The wrong order could cause gnome-shell to hang after
+    a suspend/resume and/or DPMS off/on cycle.
+    
+    Signed-off-by: Michel Dänzer <michel.daenzer@amd.com>
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit c0c3cac8613e31e310242695d0955b452f116e25
+Author: Maarten Lankhorst <maarten.lankhorst@canonical.com>
+Date:   Wed Jun 25 16:21:57 2014 +0200
+
+    bump version post release
+
 commit 906a0ec9224146098bb4581486129d2934d36495
 Author: Maarten Lankhorst <maarten.lankhorst@canonical.com>
 Date:   Wed Jun 25 16:10:21 2014 +0200

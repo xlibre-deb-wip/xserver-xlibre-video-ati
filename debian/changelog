@@ -1,3 +1,15 @@
+xserver-xorg-video-ati (1:7.5.0-1) unstable; urgency=medium
+
+  [ Andreas Boll ]
+  * New upstream release.
+  * Bump libdrm-dev build-dep to 2.4.58.
+
+  [ Julien Cristau ]
+  * Let uscan verify tarball signatures.
+  * Disable silent build rules.
+
+ -- Julien Cristau <jcristau@debian.org>  Sun, 05 Oct 2014 18:53:26 +0200
+
 xserver-xorg-video-ati (1:7.4.0-2ubuntu2) utopic; urgency=low
 
   * Rebuild for xorg 1.16.
