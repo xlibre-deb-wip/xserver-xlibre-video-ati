@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:7.5.0-1ubuntu2) vivid; urgency=medium
+
+  * Bump build-depends to xorg 1.17.
+
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Thu, 12 Mar 2015 19:00:15 +0100
+
 xserver-xorg-video-ati (1:7.5.0-1ubuntu1) vivid; urgency=medium
 
   * Merge with released debian-unstable. (LP: #1421601)
