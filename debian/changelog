@@ -1,8 +1,8 @@
-xserver-xorg-video-ati (1:7.5.0-1ubuntu1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:7.5.0-1ubuntu1) vivid; urgency=medium
 
   * Merge with released debian-unstable. (LP: #1421601)
 
- -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Mon, 09 Mar 2015 10:44:44 +0100
+ -- Maarten Lankhorst <maarten.lankhorst@ubuntu.com>  Thu, 12 Mar 2015 13:28:50 +0100
 
 xserver-xorg-video-ati (1:7.5.0-1) unstable; urgency=medium
 
