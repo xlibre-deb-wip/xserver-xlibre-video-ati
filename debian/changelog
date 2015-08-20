@@ -10,6 +10,13 @@ xserver-xorg-video-ati (1:7.5.0+git20150819-1) UNRELEASED; urgency=medium
 
  -- Timo Aaltonen <tjaalton@debian.org>  Thu, 20 Aug 2015 14:25:34 +0300
 
+xserver-xorg-video-ati (1:7.5.0-1ubuntu3) wily; urgency=medium
+
+  * debian/patches/xmir.patch:
+    - Drop XMir patch, we don't need it with new glamor based XMir (LP: #1462994)
+
+ -- Robert Ancell <robert.ancell@canonical.com>  Tue, 09 Jun 2015 15:16:34 +1200
+
 xserver-xorg-video-ati (1:7.5.0-1ubuntu2) vivid; urgency=medium
 
   * Bump build-depends to xorg 1.17.
