@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "radeon.h"
+#include "radeon_glamor.h"
 #include "radeon_reg.h"
 #include "radeon_probe.h"
 #include "radeon_video.h"
@@ -71,12 +72,6 @@ Bool radeon_crtc_is_enabled(xf86CrtcPtr crtc)
 {
     drmmode_crtc_private_ptr drmmode_crtc = crtc->driver_private;
     return drmmode_crtc->dpms_mode == DPMSModeOn;
-}
-
-uint32_t radeon_get_interpolated_vblanks(xf86CrtcPtr crtc)
-{
-    drmmode_crtc_private_ptr drmmode_crtc = crtc->driver_private;
-    return drmmode_crtc->interpolated_vblanks;
 }
 
 xf86CrtcPtr
