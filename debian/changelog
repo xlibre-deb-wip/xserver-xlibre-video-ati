@@ -1,8 +1,8 @@
-xserver-xorg-video-ati (1:7.5.0+git20150819-0ubuntu1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:7.5.0+git20150819-0ubuntu1) wily; urgency=medium
 
   * Merge from unreleased Debian git.
 
- -- Timo Aaltonen <tjaalton@debian.org>  Thu, 20 Aug 2015 14:27:02 +0300
+ -- Timo Aaltonen <tjaalton@debian.org>  Thu, 20 Aug 2015 15:59:30 +0300
 
 xserver-xorg-video-ati (1:7.5.0+git20150819-1) UNRELEASED; urgency=medium
 
