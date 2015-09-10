@@ -32,9 +32,10 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${xviddriver:Depends},
- xserver-xorg-video-r128,
- xserver-xorg-video-mach64,
  xserver-xorg-video-radeon
+Suggests:
+ xserver-xorg-video-r128,
+ xserver-xorg-video-mach64
 Provides: ${xviddriver:Provides}
 Description: X.Org X server -- AMD/ATI display driver wrapper
  This package provides the 'ati' driver for the AMD/ATI Mach64, Rage128,
@@ -57,9 +58,10 @@ Architecture: any
 Depends:
  ${misc:Depends},
  xserver-xorg-video-ati (= ${binary:Version}),
- xserver-xorg-video-mach64-dbg,
- xserver-xorg-video-r128-dbg,
  xserver-xorg-video-radeon-dbg
+Suggests:
+ xserver-xorg-video-mach64-dbg,
+ xserver-xorg-video-r128-dbg
 Section: debug
 Priority: extra
 Description: X.Org X server -- AMD/ATI display driver wrapper (debugging symbols)

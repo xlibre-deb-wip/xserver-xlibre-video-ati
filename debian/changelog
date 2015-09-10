@@ -5,6 +5,7 @@ xserver-xorg-video-ati (1:7.5.0+git20150819-1) UNRELEASED; urgency=medium
 
   [ Andreas Boll ]
   * Fix Vcs-* fields.
+  * Move xxv-mach64 and xxv-r128 from depends to suggests.
 
  -- Timo Aaltonen <tjaalton@debian.org>  Thu, 20 Aug 2015 14:25:34 +0300
 
