@@ -1,6 +1,10 @@
 xserver-xorg-video-ati (1:7.5.0+git20150819-1) UNRELEASED; urgency=medium
 
+  [ Timo Aaltonen ]
   * New upstream snapshot.
+
+  [ Andreas Boll ]
+  * Fix Vcs-* fields.
 
  -- Timo Aaltonen <tjaalton@debian.org>  Thu, 20 Aug 2015 14:25:34 +0300
 
