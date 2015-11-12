@@ -1,6 +1,7 @@
 xserver-xorg-video-ati (1:7.6.1-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * Update debian/upstream/signing-key.asc.
   * Fix Vcs-* fields.
   * Move xxv-mach64 and xxv-r128 from depends to suggests.
   * Add upstream url.
