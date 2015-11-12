@@ -181,7 +181,7 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
     RADEONInfoPtr info = RADEONPTR(pScrn);
     BufferPtr buffers;
     struct dri2_buffer_priv *privates;
-    PixmapPtr pixmap, depth_pixmap;
+    PixmapPtr pixmap;
     int flags;
     unsigned front_width;
     uint32_t tiling = 0;
@@ -209,10 +209,9 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
 	cpp = drawable->bitsPerPixel / 8;
     }
 
-    pixmap = pScreen->GetScreenPixmap(pScreen);
-    front_width = pixmap->drawable.width;
+    front_width = pScreen->GetScreenPixmap(pScreen)->drawable.width;
 
-    pixmap = depth_pixmap = NULL;
+    pixmap = NULL;
 
     if (attachment == DRI2BufferFrontLeft) {
 	uint32_t handle;
@@ -227,9 +226,6 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
 	    pixmap = NULL;
 	} else
 	    pixmap->refcnt++;
-    } else if (attachment == DRI2BufferStencil && depth_pixmap) {
-        pixmap = depth_pixmap;
-        pixmap->refcnt++;
     }
 
     if (!pixmap && (is_glamor_pixmap || attachment != DRI2BufferFrontLeft)) {
@@ -313,10 +309,6 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
     buffers = calloc(1, sizeof *buffers);
     if (buffers == NULL)
         goto error;
-
-    if (attachment == DRI2BufferDepth) {
-        depth_pixmap = pixmap;
-    }
 
     if (pixmap) {
 	if (!info->use_glamor) {
@@ -641,9 +633,9 @@ xf86CrtcPtr radeon_dri2_drawable_crtc(DrawablePtr pDraw, Bool consider_disabled)
 	if (priv->crtc && priv->crtc != crtc) {
 	    CARD64 ust, mscold, mscnew;
 
-	    radeon_dri2_get_crtc_msc(priv->crtc, &ust, &mscold);
-	    radeon_dri2_get_crtc_msc(crtc, &ust, &mscnew);
-	    priv->vblank_delta += mscold - mscnew;
+	    if (radeon_dri2_get_crtc_msc(priv->crtc, &ust, &mscold) &&
+		radeon_dri2_get_crtc_msc(crtc, &ust, &mscnew))
+		priv->vblank_delta += mscold - mscnew;
 	}
 
 	priv->crtc = crtc;
