@@ -82,7 +82,7 @@ Depends:
  ${misc:Depends},
  ${xviddriver:Depends}
 Provides: ${xviddriver:Provides}
-Suggests: firmware-linux
+Suggests: firmware-amd-graphics
 Description: X.Org X server -- AMD/ATI Radeon display driver
  This package provides the 'radeon' driver for the AMD/ATI cards. The
  following chips should be supported: R100, RV100, RS100, RV200, RS200,
