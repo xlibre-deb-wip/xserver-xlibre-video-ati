@@ -1,14 +1,11 @@
-xserver-xorg-video-ati (1:7.5.0+git20150819-1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:7.6.1-1) UNRELEASED; urgency=medium
 
-  [ Timo Aaltonen ]
-  * New upstream snapshot.
-
-  [ Andreas Boll ]
+  * New upstream release.
   * Fix Vcs-* fields.
   * Move xxv-mach64 and xxv-r128 from depends to suggests.
   * Add upstream url.
 
- -- Timo Aaltonen <tjaalton@debian.org>  Thu, 20 Aug 2015 14:25:34 +0300
+ -- Andreas Boll <andreas.boll.dev@gmail.com>  Thu, 12 Nov 2015 13:13:44 +0100
 
 xserver-xorg-video-ati (1:7.5.0-1) unstable; urgency=medium
 
