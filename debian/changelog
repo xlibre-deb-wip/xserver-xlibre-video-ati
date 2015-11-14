@@ -1,5 +1,6 @@
 xserver-xorg-video-ati (1:7.6.1-1) UNRELEASED; urgency=medium
 
+  [ Andreas Boll ]
   * New upstream release.
   * Update debian/upstream/signing-key.asc.
   * Fix Vcs-* fields.
@@ -8,6 +9,9 @@ xserver-xorg-video-ati (1:7.6.1-1) UNRELEASED; urgency=medium
   * Replace Suggests: firmware-linux with new firmware-amd-graphics.
   * Update list of supported chips.
   * Bump standards version to 3.9.6.
+
+  [ Julien Cristau ]
+  * Remove Drew from Uploaders.
 
  -- Andreas Boll <andreas.boll.dev@gmail.com>  Thu, 12 Nov 2015 13:13:44 +0100
 
