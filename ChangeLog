@@ -1,3 +1,513 @@
+commit df6662864b56d1aeeea4c67d9b668e64197afb20
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Apr 7 11:44:05 2016 +0900
+
+    Bump version for 7.7.0 release
+
+commit c12614cfdc5729041c204e3ead1dbfde38011f0c
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Mon Apr 4 14:59:41 2016 +0900
+
+    Update manpage entry for Option "TearFree"
+    
+    It's now effective for rotation as well.
+    
+    (Ported from amdgpu commit faf9d720b7d650f5f1ea657a874d08eac3972e60)
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 4693b1bd5b5c381e8b7b68a6f7f0c6696d6a68df
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Mar 31 17:02:55 2016 +0900
+
+    Identify DRM event queue entries by sequence number instead of by pointer
+    
+    If the memory for an entry was allocated at the same address as that for
+    a previously cancelled entry, the handler could theoretically be called
+    prematurely, triggered by the DRM event which was submitted for the
+    cancelled entry.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 83734317e6bdaeebb4462a63f541e73a1d7c2f77
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 30 11:44:09 2016 +0900
+
+    Update pixmap pitch in radeon_set_pixmap_bo
+    
+    Stop second guessing it in drmmode_crtc_scanout_create.
+    
+    Fixes display corruption in some cases with TearFree enabled.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=94751
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 0b3aac1de9db42bfca545fa331e4985836682ec7
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Mon Mar 28 18:43:36 2016 +0900
+
+    DRI3: Refuse to open DRM file descriptor for ssh clients (v2)
+    
+    Fixes hangs when attempting to use DRI3 on display connections forwarded
+    via SSH.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=93261
+    
+    v2: Don't do this for Xorg > 1.18.99.1 since the corresponding xserver
+        change has landed in Git master.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com> (v1)
+
+commit 8a6cd4bda05b9569b3dd0a5a75b2cc385b9ecba9
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Mar 25 11:50:15 2016 +0900
+
+    Revert "Use render node for DRI3 if available"
+    
+    This reverts commit cd94248ffa7d8fe0b57476f79e7e860dee66d1b0.
+    
+    It broke VDPAU<->GL interop with DRI3 enabled, because the Gallium VDPAU
+    code doesn't support DRI3 yet. We can consider re-enabling this once
+    there is a Mesa release where the Gallium VDPAU code supports DRI3.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=94675
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit ed31cffba0d1bd4b14e5348a1456e4377277059c
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Mar 24 18:08:22 2016 +0900
+
+    Call RADEONBlockHandler_KMS before setting initial modes
+    
+    Doing it the other way around meant that there was still a possibility
+    for the front buffer contents to be uninitialized when they start being
+    scanned out.
+    
+    (Ported from amdgpu commit 4a60b4b1851a3cbc2d8ad9048d68eeb6947cf132)
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit e592f32f8b5f5873fcc18b10a69dd5e4ccf11073
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 23 18:25:48 2016 +0900
+
+    Require xserver 1.9 or newer
+    
+    1.9.0 was released in August 2010.
+    
+    We were already unintentionally relying on things not available in 1.8
+    for at least a year, and nobody has complained.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit bde466e5d44cad64b4e4eceaa5de80fdbf86356e
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 23 18:16:42 2016 +0900
+
+    Fix build against older versions of xserver
+    
+    Also slightly clean up the error handling in radeon_scanout_do_update.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=94614
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit b2b079be0e7ef2704c3df9ee25fe46166e450e83
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 23 17:29:47 2016 +0900
+
+    Use radeon_alloc_pixmap_bo for allocating scanout BOs
+    
+    This enables tiling for scanout BOs used for TearFree / ShadowPrimary,
+    and simplifies the code a little.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit d21ac4669a8b2cdd4eec5e5a94d1950b7423b8b5
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 23 17:27:27 2016 +0900
+
+    DRI3 only works with acceleration
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=94214
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit eb1a2c57e6c45d7ca57b2e2be643194243b7aae1
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 23 17:23:31 2016 +0900
+
+    TearFree can only work with acceleration
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit d670c5c9851b4eff21c845d26c7d7e4eb5ee0fa9
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Mar 18 16:46:08 2016 +0900
+
+    Check for xf86CursorResetCursor
+    
+    If it's available, Xorg calls it on each mode configuration change. It
+    does what xf86_reload_cursors does (and more), so we don't need to call
+    the latter anymore.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 7f3d0780ca65a90117c2a61362dbc0899bd9c0b0
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 9 18:28:47 2016 +0900
+
+    Don't try DRI2/Present flipping while the HW cursor can't be used
+    
+    Flipping doesn't interact correctly with SW cursor: A flip makes the SW
+    cursor disappear. It will only appear again when the cursor is moved,
+    but it will be surrounded by corruption, because the SW cursor code
+    will restore stale screen contents at the old cursor location before
+    drawing the cursor at the new location.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 3de480e83c0a1824838d662d6d67c9fe85277298
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 9 16:44:32 2016 +0900
+
+    Factor out HW cursor checking code into drmmode_can_use_hw_cursor
+    
+    And add a check for RandR 1.4 multihead.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 2e0b458e747c7df81dd5f9579a762262af3350e1
+Author: Ryan Kennedy <Ryan.Kennedy@amd.com>
+Date:   Sun Mar 20 17:57:56 2016 -0400
+
+    Use correct tiling in drmmode_create_bo_pixmap
+    
+    The callers were using 0 for the tiling flags, causing surfaces to be
+    incorrectly treated as linear. This issue was causing corruption on Cayman
+    just after login with GNOME3. The kernel was rejecting the cs in
+    drmmode_copy_fb due to invalid texture pitch.
+    
+    Signed-off-by: Ryan Kennedy <Ryan.Kennedy@amd.com>
+    Reviewed-by: Michel Dänzer <michel.daenzer@amd.com>
+
+commit a03271de5ecdaa7790d1316e993c4450b91fe936
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 9 18:23:10 2016 +0900
+
+    present: Return rotated CRTCs from radeon_present_get_crtc
+    
+    Sync-to-vblank works fine with rotation. We're still checking for
+    rotation in radeon_present_check_flip.
+    
+    Returning NULL from here resulted in the xserver present code falling
+    back to the fake CRTC running at 1 fps.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 40191d82370eb7e58bd34c44966cbf44c3703229
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Mar 9 18:15:57 2016 +0900
+
+    present: Clear drmmode->fb_id before calling set_mode_major for unflip
+    
+    Without this, drmmode_set_mode_major may just re-set the FB for the
+    last flipped BO, in which case the display will probably freeze.
+    
+    Reproduction recipe: Enable rotation while a fullscreen client is
+    flipping.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 798c4fd16d339b1ad5fd729cc884be084c60e38b
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Dec 25 18:57:42 2015 +0900
+
+    Make Option "TearFree" effective for rotated/reflected outputs as well (v2)
+    
+    Support varies by xserver version:
+    
+    < 1.12:    No support for the driver handling rotation/reflection
+    1.12-1.15: Support for driver handling rotation/reflection, but there's
+               a bug preventing the HW cursor from being visible everywhere
+               it should be on rotated outputs, so we can only support
+               TearFree for reflection.
+    >= 1.16:   While the bug above is still there (fixes pending review),
+               the driver can force SW cursor for rotated outputs, so we
+               can support TearFree for rotation as well.
+    
+    v2: Don't set crtc->driverIsPerformingTransform after xf86CrtcRotate if
+        it wasn't set before. Fixes breaking rotation with TearFree disabled.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com> (v1)
+
+commit eb611a2e4ecce7a1ab85fd72b9b78e3269311dd5
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Tue Feb 2 18:04:11 2016 +0900
+
+    Consolidate pScreen usage in drmmode_set_mode_major
+    
+    We were already relying on pScrn->pScreen being non-NULL in some cases,
+    which is supposedly always true ever since this function is no longer
+    getting called from ScreenInit.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 06602171386e538081c298645fb7ca1a70fe80cc
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Feb 4 17:13:57 2016 +0900
+
+    Remove check for XF86_CRTC_VERSION 3
+    
+    We require xserver >= 1.8, which was already at version 3.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit a88985f5d1e39caca49ceb65678aaa9cb622a0d2
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Mon Feb 29 18:12:43 2016 +0900
+
+    Deal with modesets and page flips crossing on a CRTC
+    
+    If we set a mode while a flip is pending, the kernel driver may program
+    the flip to the hardware after the modeset. If that happens, the hardware
+    will display the BO from the flip, whereas we will assume it displays the
+    BO from the modeset. In other words, the display will most likely freeze,
+    at least until another modeset.
+    
+    Prevent this condition by waiting for a pending flip to finish before
+    setting a mode.
+    
+    Fixes display freezing when setting rotation or a transform with
+    TearFree enabled.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit f5d968cbba3c9b7ec202161f2157d8d64778c817
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu May 21 12:54:31 2015 +0900
+
+    Make DRM event queue xf86CrtcPtr based instead of ScrnInfoPtr based
+    
+    This allows for a minor simplification of the code.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit e87365117acbd80b7d80fbb5eb30890ef7153291
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Feb 25 16:49:16 2016 +0900
+
+    DRI2: Also clear dri2_flipping when client disconnects before event
+    
+    Fixes the following problem:
+    
+    With DRI3 enabled, run glxgears with LIBGL_DRI3_DISABLE=1, make it
+    fullscreen and press Escape while it's still fullscreen. This could
+    result in dri2_flipping not getting cleared, spuriously preventing apps
+    using DRI3 from flipping.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit d5dbb07db22d5420c81dfebc060f0dd86e7b8a20
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Feb 25 18:02:12 2016 +0900
+
+    Remove radeon_scanout_flip_handler
+    
+    No longer necessary now that radeon_drm_queue_handler can handle
+    e->handler == NULL.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 3989766edde85d1abe7024577b98fc9b007bc02a
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Feb 25 16:43:48 2016 +0900
+
+    drm_queue: Don't abort events immediately from radeon_drm_abort_client
+    
+    Keep them around until the DRM event arrives, but then call the abort
+    functions instead of the handler functions.
+    
+    This is a prerequisite for the following fix.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 7bc089ee9740a3ef91f16e36786d8ed64e165acd
+Author: jimqu <Jim.Qu@amd.com>
+Date:   Tue Feb 16 17:05:48 2016 +0900
+
+    glamor: Return NullPixmap on failure to create shareable pixmap
+    
+    If we were asked to create a shareable pixmap, it doesn't make sense
+    to return a pixmap which isn't shareable. Doing so caused trouble down
+    the line such as a crash with older versions of glamor when trying to
+    use GLX pixmaps of bpp < 32 via DRI2.
+    
+    Signed-off-by: JimQu <jim.qu@amd.com>
+    (ported from amdgpu commit 2fcb7dadd3c71cd405cbbaafc777697538ca9c29)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 4cc32031467157ab8788f5c684fb1ac67ae96ff9
+Author: jimqu <Jim.Qu@amd.com>
+Date:   Tue Feb 16 17:03:24 2016 +0900
+
+    Move radeon_glamor_destroy_pixmap before radeon_glamor_create_pixmap
+    
+    The next commit will call the former from the latter. No functional
+    change.
+    
+    Signed-off-by: JimQu <jim.qu@amd.com>
+    (ported from amdgpu commit 5269a2228bff6023c1a7f3e8534027e1d7addc25)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit a9b181083d56b5de9b6822d0ed89fcc86de777a6
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Tue Feb 16 16:59:40 2016 +0900
+
+    Remove pci_dev test from radeon_get_scrninfo
+    
+    The pci_dev parameter can never be NULL since we only support KMS.
+    
+    Reported-by: Tom St Denis <tom.stdenis@amd.com>
+    (ported from amdgpu commit 6e42c58375a4c3229da93c27bbd104af145c6163)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 2c7f068b0a0493daae86e5eacdf8d9812fcd28dc
+Author: Mykola Lysenko <Mykola.Lysenko@amd.com>
+Date:   Mon Feb 15 18:21:39 2016 +0900
+
+    Initialize drmmode_crtc dpms_mode to DPMSModeOff
+    
+    This disables query of disabled pipes for drmWaitVBlank on X start
+    
+    Signed-off-by: Mykola Lysenko <Mykola.Lysenko@amd.com>
+    (ported from amdgpu commit 4eb9cedca080b30c57ded349a397620ee7d0cd46)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 9358e44f03c95396b7f7a4f7398f5b24d2559bb2
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Mon Feb 15 18:20:31 2016 +0900
+
+    sync: Check if miSyncShmScreenInit symbol is resolved at runtime
+    
+    It may be disabled in the Xorg build, either explicitly or because the
+    xshmfence library isn't available.
+    
+    (ported from amdgpu commit 1d0b0c1794e65e581a48aa9fb19679d928d82a5d)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit cd94248ffa7d8fe0b57476f79e7e860dee66d1b0
+Author: Jammy Zhou <Jammy.Zhou@amd.com>
+Date:   Tue Feb 16 16:36:33 2016 +0900
+
+    Use render node for DRI3 if available
+    
+    Signed-off-by: Jammy Zhou <Jammy.Zhou@amd.com>
+    (ported from amdgpu commit ea558e645786b08d75307716036045170e97b43e)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit d41fcccf2f11d0393d252e76bbbe6d233c4ac443
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Wed Jan 20 11:20:30 2016 +0900
+
+    Set RADEON_GEM_NO_CPU_ACCESS flag for BOs which don't need CPU access
+    
+    Failing to do this was resulting in the kernel driver unnecessarily
+    leaving open the possibility of CPU access to those BOs.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 9483a3d777919b224f70c3b4d01e4b320a57db31
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Jan 15 16:48:46 2016 +0900
+
+    Fix RandR CRTC transforms
+    
+    Currently, Xorg will only transform the cursor as of the first time the
+    cursor image changes after a transform is set.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=80678
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit b16856b25086ffb27365ac2249b8da921066ce62
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Jan 14 17:32:54 2016 +0900
+
+    Set the RandR primary output on startup if Xorg hasn't
+    
+    Fixes xrandr (XRRGetOutputPrimary) not reporting any output as primary
+    after startup.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit c7cf00487cd6d4a5d0f39d5b92ff04f6420d6a32
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Nov 27 12:52:28 2015 +0900
+
+    Build RandR 1.4 provider name from chipset name and bus ID
+    
+    Instead of just "radeon", it's now e.g. "KAVERI @ pci:0000:00:01.0".
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit ff9a6b6f079a8419f4e6fadfee778060618bf735
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Dec 11 17:21:27 2015 +0900
+
+    HAS_DIRTYTRACKING_ROTATION also supports multiple CRTCs
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 78fbca095ae9887a2d3de48bb07975e2d1126e68
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Tue Dec 1 15:38:13 2015 +0900
+
+    Load fb module before glamoregl/shadow modules
+    
+    Fixes unresolved symbols on some systems.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=93105
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit b19417e2fddf4df725951aea5ad5e9558338f59e
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Fri Nov 20 18:48:56 2015 +0900
+
+    Don't advertise any PRIME offloading capabilities without acceleration
+    
+    Acceleration is required even for display offloading. Trying to enable
+    display offloading without acceleration resulted in a crash.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 10b7c3def58bb34acc38f076bc230e25b454ab79
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Tue Nov 10 16:31:09 2015 +0900
+
+    glamor: Deal with glamor_egl_destroy_textured_pixmap being removed
+    
+    When it's not available, it's safe to call down to the glamor
+    DestroyPixmap hook instead.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit 535e5438b2c32f774b9c8c27ee0289b4749548ef
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Tue Nov 10 17:31:52 2015 +0900
+
+    glamor: Restore all ScreenRec hooks during CloseScreen
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+
+commit dfb52777e43f3855476cff812d64de687a199674
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Nov 12 13:49:04 2015 +0900
+
+    Post 7.6.1 release version bump
+
 commit 99cb8c3faf1a4ce368b7500f17a2a7868c15e8e8
 Author: Michel Dänzer <michel.daenzer@amd.com>
 Date:   Thu Nov 12 13:38:14 2015 +0900
