@@ -1,3 +1,245 @@
+commit d6f89352f64f4eff858b671e49b732f9973f6e11
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 17:44:21 2016 +0900
+
+    Bump version for 7.7.1 release
+
+commit e890402d14ea7c4b22ef7f19d0679fb45d4eac4e
+Author: Qiang Yu <Qiang.Yu@amd.com>
+Date:   Thu Sep 15 16:51:00 2016 +0900
+
+    DRI2: Fix radeon_dri2_exchange_buffers width/height copy'n'paste error
+    
+    Signed-off-by: Qiang Yu <Qiang.Yu@amd.com>
+    (Ported from amdgpu commit 73c8dc000ad6b2b53ba3aa7155f5e8f6b55623b7)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 12d30eeb9711bd2b1609d6bbb74c4a1760596f72)
+
+commit b95ddb39c1154b3231cefd4e99046e7fb89f1e99
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:50:24 2016 +0900
+
+    DRI2: Add interpolated_vblanks in radeon_dri2_get_crtc_msc
+    
+    We need that in radeon_dri2_drawable_crtc as well for priv->vblank_delta
+    to work as intended.
+    
+    radeon_dri2_get_msc was already doing this.
+    
+    Fixes hangs in some cases when using VDPAU via DRI2 and moving the
+    window between CRTCs.
+    
+    (Ported from amdgpu commit abd1a7901c95e4bc78415cf1b7923623b9177152)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 11cc6843aa3b745aa1361f1a65e465e16696b914)
+
+commit 6cca7d529c3bb07bc78a49ae5085028ac743fe1d
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:49:48 2016 +0900
+
+    Destroy all dedicated scanout buffers during CloseScreen
+    
+    Fixes leaking active scanout buffers across a server reset, which also
+    fixes server reset with glamor and active scanout buffers.
+    
+    (Ported from amdgpu commit d96dabc71b1b32dc4b422a9633cdd4e0e95da052)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 4a5fa37f74c233c6b9c6a08306688628a8e216e8)
+
+commit 05f3735131e8fa8c2d1adbca70dab7967e3be58c
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:49:10 2016 +0900
+
+    glamor: Reallocate linear pixmap BO if necessary for DRI2 PRIME
+    
+    Fixes corruption when using DRI2 PRIME render offloading with the master
+    screen using this driver.
+    
+    (Ported from amdgpu commit 0007c2f018ba663303d91d847e7c085269a23062)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit cc2555835cd4c5fd2ae4f999a4bf7c18cdb1dda4)
+
+commit 6babf4d2205543a61fcd62c75fd88e49d0ed7cf1
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:48:20 2016 +0900
+
+    Move DRI2's local fixup_glamor helper to radeon_glamor_set_pixmap_bo
+    
+    So it can be used outside of the DRI2 code.
+    
+    (Ported from amdgpu commit 5518bf5d793439b5bab369e5fc18de9a4a3b9dd6)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit b3e5259e60157fdbdf46ee59b1b78995c2b15f72)
+
+commit a3d8e717d5dba8495d6b9934b0804342106e90f5
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:47:54 2016 +0900
+
+    Consolidate get_drawable_pixmap helper
+    
+    There were two static helpers for the same purpose. Consolidate them
+    into a single inline helper which can be used anywhere.
+    
+    (Ported from amdgpu commit 641f4647b7f51dfd2da330376cd10fa9702b6423)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 38632bbd5ff80a9cf8ce584b2bc499d17d15befe)
+
+commit 00a988a811741ee4e4af265deb68b97cc7e5c985
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:47:23 2016 +0900
+
+    glamor: Fix radeon_glamor_share_pixmap_backing for priv->bo == NULL
+    
+    Fixes crash when running a compositor and DRI_PRIME client via DRI2.
+    
+    Reported-by: Qiang Yu <qiang.yu@amd.com>
+    (Ported from amdgpu commit b36c77695ba77b59a0ccd868454e3af4fc04d5ff)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit e91858e435672c32f9c4a854b3dec048199d6f7f)
+
+commit 953b4c2cdf3ea2dcf2d7cc0b1fa0fabefcc49afd
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:46:35 2016 +0900
+
+    Also handle disabled CRTCs in drmmode_clear_pending_flip
+    
+    If disabling a CRTC had to be deferred due to a pending flip in
+    drmmode_crtc_dpms, there may no longer be any outputs associated with
+    the CRTC when we get here. So we have to check for !crtc->enabled and
+    call drmmode_crtc_dpms in that case as well.
+    
+    Fixes: 9090309e057d ("Wait for pending flips to complete before turning
+    off an output or CRTC")
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 4bd2d01552f18153afa03a8947b22eebf3d67c6b)
+
+commit 13f3fe45a4026801f61fb6429ca6e239a1b8c081
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:46:04 2016 +0900
+
+    Don't override crtc parameter value in drmmode_flip_handler/abort
+    
+    When overriding the crtc parameter value of the last pending CRTC,
+    drmmode_clear_pending_flip would work on the wrong CRTC, and the last
+    pending CRTC's flip_pending flag might never get cleared. This would
+    prevent that CRTC from properly turning off and back on again.
+    
+    Fixes: 9090309e057d ("Wait for pending flips to complete before turning
+    off an output or CRTC")
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=97392
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit a36fdaff40d5b4795a1400c348a80eee94892212)
+
+commit 08672d31a616060d23a2e1543643eafa97bfe236
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Aug 25 18:22:34 2016 +0900
+
+    Also call drmmode_clear_pending_flip from radeon_scanout_flip_abort
+    
+    Not doing so could break DPMS with TearFree.
+    
+    Reported-and-Tested-by: furkan on IRC
+    Fixes: 9090309e057d ("Wait for pending flips to complete before turning
+    off an output or CRTC")
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit e520ce0ec0adf91ddce5c932d4b3f9477fd49304)
+
+commit a12ff1c6aec4453a6f64878cc64961488e803ed1
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:44:13 2016 +0900
+
+    Wait for pending flips to complete before turning off an output or CRTC
+    
+    At least with older kernels, the flip may never complete otherwise,
+    which can result in us hanging in drmmode_set_mode_major.
+    
+    Fixes: https://bugs.launchpad.net/ubuntu/+source/xserver-xorg-video-ati/+bug/1577170
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 9090309e057dc703d1a5bffd88e6cae14108cfc3)
+
+commit 4d377fd007d9a39178e318a8cf8bee5d68415c56
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:42:05 2016 +0900
+
+    Don't enable micro-tiling for scanout buffers on pre-R600
+    
+    The display engine didn't support it.
+    
+    Fixes display corruption with options "TearFree" and "ShadowPrimary"
+    (and rotation or transforms with current xserver) on pre-R600.
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 6d91fb4fc701895473ff675f440a8eef655e80ca)
+
+commit 16135cc8b5d302cf89e174c52e455b64c2c84237
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:41:15 2016 +0900
+
+    Only use RandR APIs if RandR is enabled
+    
+    Fixes crash with Xinerama enabled, which disables RandR.
+    
+    Fixes: https://bugs.debian.org/827984
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 3be841d0ae7d505cef325993205b12d15e98dba9)
+
+commit 948f592259f2f0c0ff331b869fb8f73ce0b29193
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:40:32 2016 +0900
+
+    Explicitly set the fbcon pixmap pitch again
+    
+    The kernel driver returns 0 as the pitch of the fbcon BO via the
+    DRM_RADEON_GEM_GET_TILING ioctl, so we ended up using an incorrect
+    pitch in some cases.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=94901
+    
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 040a7b80e1fcbaa93ac17f7113d696d9b853cf8a)
+
+commit d1e74e357278d1227425b12a4a1be2b337a6051d
+Author: Qiang Yu <Qiang.Yu@amd.com>
+Date:   Thu Sep 15 16:39:37 2016 +0900
+
+    Fix radeon_mode_hotplug crash on multi GPU platform.
+    
+    On multi GPU platform, some screen is created by other GPU DDX.
+    
+    Signed-off-by: Qiang Yu <Qiang.Yu@amd.com>
+    (Ported from amdgpu commit 978242977e5dc905e1d5a46b1b0d34b356c7af26)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit 380daff43cfefe2a8e4d496eaf65673f2815c878)
+
+commit 3f4cba12b71206aa60271ac435c3709ee335a371
+Author: Michel Dänzer <michel.daenzer@amd.com>
+Date:   Thu Sep 15 16:38:52 2016 +0900
+
+    Handle Zaphod mode correctly in radeon_mode_hotplug
+    
+    We need to scan both screens of the entity for existing connectors, and
+    enumerate DVI & HDMI connectors consistently regardless of which screen
+    they're assigned to.
+    
+    Fixes crash when hot-(un)plugging connectors in Zaphod mode.
+    
+    Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=93415
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit c801f9f10a5d72d935faf21e72f7e7808fb4f05f)
+
+commit 470538c354977e2ef5256029433d2e28e4a1f7e8
+Author: Qiang Yu <Qiang.Yu@amd.com>
+Date:   Thu Sep 15 16:37:57 2016 +0900
+
+    Remove RR_Capability_SinkOutput for GPU without CRTC
+    
+    Signed-off-by: Qiang Yu <Qiang.Yu@amd.com>
+    (Ported from amdgpu commit a0bbb373f902e0ffc14570c85faec7e44134f62e)
+    Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+    (Cherry picked from commit ba8b6288c8e6fc4be5d7144ecbe9a1f241881674)
+
 commit df6662864b56d1aeeea4c67d9b668e64197afb20
 Author: Michel Dänzer <michel.daenzer@amd.com>
 Date:   Thu Apr 7 11:44:05 2016 +0900
