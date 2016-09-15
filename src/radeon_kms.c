@@ -241,7 +241,6 @@ static Bool RADEONCreateScreenResources_KMS(ScreenPtr pScreen)
 {
     ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     RADEONInfoPtr  info   = RADEONPTR(pScrn);
-    rrScrPrivPtr rrScrPriv = rrGetScrPriv(pScreen);
     PixmapPtr pixmap;
     struct radeon_surface *surface;
 
@@ -251,17 +250,21 @@ static Bool RADEONCreateScreenResources_KMS(ScreenPtr pScreen)
     pScreen->CreateScreenResources = RADEONCreateScreenResources_KMS;
 
     /* Set the RandR primary output if Xorg hasn't */
-    if (
-#ifdef RADEON_PIXMAP_SHARING
-	!pScreen->isGPU &&
-#endif
-	!rrScrPriv->primaryOutput)
-    {
-	xf86CrtcConfigPtr xf86_config = XF86_CRTC_CONFIG_PTR(pScrn);
+    if (dixPrivateKeyRegistered(rrPrivKey)) {
+	rrScrPrivPtr rrScrPriv = rrGetScrPriv(pScreen);
 
-	rrScrPriv->primaryOutput = xf86_config->output[0]->randr_output;
-	RROutputChanged(rrScrPriv->primaryOutput, FALSE);
-	rrScrPriv->layoutChanged = TRUE;
+	if (
+#ifdef RADEON_PIXMAP_SHARING
+	    !pScreen->isGPU &&
+#endif
+	    !rrScrPriv->primaryOutput)
+	{
+	    xf86CrtcConfigPtr xf86_config = XF86_CRTC_CONFIG_PTR(pScrn);
+
+	    rrScrPriv->primaryOutput = xf86_config->output[0]->randr_output;
+	    RROutputChanged(rrScrPriv->primaryOutput, FALSE);
+	    rrScrPriv->layoutChanged = TRUE;
+	}
     }
 
     if (!drmmode_set_desired_modes(pScrn, &info->drmmode, FALSE))
@@ -368,7 +371,7 @@ radeon_scanout_do_update(xf86CrtcPtr xf86_crtc, int scanout_id)
     Bool force;
 
     if (!xf86_crtc->enabled ||
-	drmmode_crtc->dpms_mode != DPMSModeOn ||
+	drmmode_crtc->pending_dpms_mode != DPMSModeOn ||
 	!drmmode_crtc->scanout[scanout_id].pixmap)
 	return FALSE;
 
@@ -502,7 +505,7 @@ radeon_scanout_update(xf86CrtcPtr xf86_crtc)
     if (!xf86_crtc->enabled ||
 	drmmode_crtc->scanout_update_pending ||
 	!drmmode_crtc->scanout[0].pixmap ||
-	drmmode_crtc->dpms_mode != DPMSModeOn)
+	drmmode_crtc->pending_dpms_mode != DPMSModeOn)
 	return;
 
     pDamage = drmmode_crtc->scanout[0].damage;
@@ -553,7 +556,7 @@ radeon_scanout_flip_abort(xf86CrtcPtr crtc, void *event_data)
     drmmode_crtc_private_ptr drmmode_crtc = event_data;
 
     drmmode_crtc->scanout_update_pending = FALSE;
-    drmmode_crtc->flip_pending = FALSE;
+    drmmode_clear_pending_flip(crtc);
 }
 
 static void
@@ -1108,8 +1111,11 @@ static void RADEONSetupCapabilities(ScrnInfoPtr pScrn)
     if (ret == 0) {
 	if (value & DRM_PRIME_CAP_EXPORT)
 	    pScrn->capabilities |= RR_Capability_SourceOutput | RR_Capability_SinkOffload;
-	if (value & DRM_PRIME_CAP_IMPORT)
-	    pScrn->capabilities |= RR_Capability_SinkOutput | RR_Capability_SourceOffload;
+	if (value & DRM_PRIME_CAP_IMPORT) {
+	    pScrn->capabilities |= RR_Capability_SourceOffload;
+	    if (info->drmmode.count_crtcs)
+		pScrn->capabilities |= RR_Capability_SinkOutput;
+	}
     }
 #endif
 }
@@ -1228,8 +1234,6 @@ Bool RADEONPreInit_KMS(ScrnInfoPtr pScrn, int flags)
 
     info->allowColorTiling2D = FALSE;
 
-    RADEONSetupCapabilities(pScrn);
-
     /* don't enable tiling if accel is not enabled */
     if (!info->r600_shadow_fb) {
 	Bool colorTilingDefault =
@@ -1327,6 +1331,8 @@ Bool RADEONPreInit_KMS(ScrnInfoPtr pScrn, int flags)
 	xf86DrvMsg(pScrn->scrnIndex, X_ERROR, "Kernel modesetting setup failed\n");
 	goto fail;
     }
+
+    RADEONSetupCapabilities(pScrn);
 
     if (info->drmmode.count_crtcs == 1)
         pRADEONEnt->HasCRTC2 = FALSE;

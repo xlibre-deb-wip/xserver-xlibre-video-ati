@@ -78,69 +78,6 @@ static DevPrivateKeyRec dri2_window_private_key_rec;
      dixLookupPrivate(&(window)->devPrivates, dri2_window_private_key))
 
 
-static PixmapPtr get_drawable_pixmap(DrawablePtr drawable)
-{
-    if (drawable->type == DRAWABLE_PIXMAP)
-	return (PixmapPtr)drawable;
-    else
-	return (*drawable->pScreen->GetWindowPixmap)((WindowPtr)drawable);
-}
-
-
-static PixmapPtr fixup_glamor(DrawablePtr drawable, PixmapPtr pixmap)
-{
-	PixmapPtr old = get_drawable_pixmap(drawable);
-#ifdef USE_GLAMOR
-	ScreenPtr screen = drawable->pScreen;
-	struct radeon_pixmap *priv = radeon_get_pixmap_private(pixmap);
-	GCPtr gc;
-
-	/* With a glamor pixmap, 2D pixmaps are created in texture
-	 * and without a static BO attached to it. To support DRI,
-	 * we need to create a new textured-drm pixmap and
-	 * need to copy the original content to this new textured-drm
-	 * pixmap, and then convert the old pixmap to a coherent
-	 * textured-drm pixmap which has a valid BO attached to it
-	 * and also has a valid texture, thus both glamor and DRI2
-	 * can access it.
-	 *
-	 */
-
-	/* Copy the current contents of the pixmap to the bo. */
-	gc = GetScratchGC(drawable->depth, screen);
-	if (gc) {
-		ValidateGC(&pixmap->drawable, gc);
-		gc->ops->CopyArea(&old->drawable, &pixmap->drawable,
-				  gc,
-				  0, 0,
-				  old->drawable.width,
-				  old->drawable.height,
-				  0, 0);
-		FreeScratchGC(gc);
-	}
-
-	radeon_set_pixmap_private(pixmap, NULL);
-
-	/* And redirect the pixmap to the new bo (for 3D). */
-	glamor_egl_exchange_buffers(old, pixmap);
-	radeon_set_pixmap_private(old, priv);
-	old->refcnt++;
-
-	screen->ModifyPixmapHeader(old,
-				   old->drawable.width,
-				   old->drawable.height,
-				   0, 0,
-				   pixmap->devKind,
-				   NULL);
-	old->devPrivate.ptr = NULL;
-
-	screen->DestroyPixmap(pixmap);
-
-#endif /* USE_GLAMOR*/
-
-	return old;
-}
-
 /* Get GEM flink name for a pixmap */
 static Bool
 radeon_get_flink_name(RADEONInfoPtr info, PixmapPtr pixmap, uint32_t *name)
@@ -310,10 +247,11 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
 		/* this happen if pixmap is non accelerable */
 		goto error;
 	    }
+	} else if (is_glamor_pixmap) {
+	    pixmap = radeon_glamor_set_pixmap_bo(drawable, pixmap);
+	    pixmap->refcnt++;
 	}
 
-	if (is_glamor_pixmap)
-	    pixmap = fixup_glamor(drawable, pixmap);
 	if (!radeon_get_flink_name(info, pixmap, &buffers->name))
 	    goto error;
     }
@@ -578,10 +516,11 @@ static uint32_t radeon_get_msc_delta(DrawablePtr pDraw, xf86CrtcPtr crtc)
  */
 static Bool radeon_dri2_get_crtc_msc(xf86CrtcPtr crtc, CARD64 *ust, CARD64 *msc)
 {
+    drmmode_crtc_private_ptr drmmode_crtc = crtc->driver_private;
+
     if (!radeon_crtc_is_enabled(crtc) ||
 	 drmmode_crtc_get_ust_msc(crtc, ust, msc) != Success) {
 	/* CRTC is not running, extrapolate MSC and timestamp */
-	drmmode_crtc_private_ptr drmmode_crtc = crtc->driver_private;
 	ScrnInfoPtr scrn = crtc->scrn;
 	RADEONInfoPtr info = RADEONPTR(scrn);
 	CARD64 now, delta_t, delta_seq;
@@ -605,6 +544,8 @@ static Bool radeon_dri2_get_crtc_msc(xf86CrtcPtr crtc, CARD64 *ust, CARD64 *msc)
 	*msc = drmmode_crtc->dpms_last_seq;
 	*msc += delta_seq;
     }
+
+    *msc += drmmode_crtc->interpolated_vblanks;
 
     return TRUE;
 }
@@ -834,7 +775,7 @@ radeon_dri2_exchange_buffers(DrawablePtr draw, DRI2BufferPtr front, DRI2BufferPt
 
     region.extents.x1 = region.extents.y1 = 0;
     region.extents.x2 = front_priv->pixmap->drawable.width;
-    region.extents.y2 = front_priv->pixmap->drawable.width;
+    region.extents.y2 = front_priv->pixmap->drawable.height;
     region.data = NULL;
     DamageRegionAppend(&front_priv->pixmap->drawable, &region);
 
@@ -1053,7 +994,8 @@ static int radeon_dri2_get_msc(DrawablePtr draw, CARD64 *ust, CARD64 *msc)
     if (!radeon_dri2_get_crtc_msc(crtc, ust, msc))
 	return FALSE;
 
-    *msc += radeon_get_msc_delta(draw, crtc);
+    if (draw && draw->type == DRAWABLE_WINDOW)
+	*msc += get_dri2_window_priv((WindowPtr)draw)->vblank_delta;
     *msc &= 0xffffffff;
     return TRUE;
 }

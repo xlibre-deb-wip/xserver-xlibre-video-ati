@@ -88,6 +88,8 @@ typedef struct {
     unsigned scanout_id;
     Bool scanout_update_pending;
     int dpms_mode;
+    /* For when a flip is pending when DPMS off requested */
+    int pending_dpms_mode;
     CARD64 dpms_last_ust;
     uint32_t dpms_last_seq;
     int dpms_last_fps;
@@ -147,6 +149,7 @@ extern int drmmode_get_crtc_id(xf86CrtcPtr crtc);
 extern int drmmode_get_height_align(ScrnInfoPtr scrn, uint32_t tiling);
 extern int drmmode_get_pitch_align(ScrnInfoPtr scrn, int bpe, uint32_t tiling);
 extern int drmmode_get_base_align(ScrnInfoPtr scrn, int bpe, uint32_t tiling);
+extern void drmmode_clear_pending_flip(xf86CrtcPtr crtc);
 
 Bool radeon_do_pageflip(ScrnInfoPtr scrn, ClientPtr client,
 			uint32_t new_front_handle, uint64_t id, void *data,
