@@ -53,27 +53,6 @@ Description: X.Org X server -- AMD/ATI display driver wrapper
  .
  This package is built from the X.org xf86-video-ati driver module.
 
-Package: xserver-xorg-video-ati-dbg
-Architecture: any
-Depends:
- ${misc:Depends},
- xserver-xorg-video-ati (= ${binary:Version}),
- xserver-xorg-video-radeon-dbg
-Suggests:
- xserver-xorg-video-mach64-dbg,
- xserver-xorg-video-r128-dbg
-Section: debug
-Priority: extra
-Description: X.Org X server -- AMD/ATI display driver wrapper (debugging symbols)
- This package provides the 'ati' driver for the AMD/ATI Mach64, Rage128,
- Radeon, FireGL, FireMV, FirePro and FireStream series. This driver is
- actually a wrapper that loads one of the 'mach64', 'r128' or 'radeon'
- sub-drivers depending on the hardware.
- These sub-drivers are brought through package dependencies.
- .
- This package provides debugging symbols for this X.org X driver wrapper
- and brings debugging symbols for sub-drivers through package dependencies.
-
 Package: xserver-xorg-video-radeon
 Architecture: any
 Depends:
@@ -97,15 +76,3 @@ Description: X.Org X server -- AMD/ATI Radeon display driver
  <URL:http://www.X.org>
  .
  This package is built from the X.org xf86-video-ati driver module.
-
-Package: xserver-xorg-video-radeon-dbg
-Architecture: any
-Depends:
- ${misc:Depends},
- xserver-xorg-video-radeon (= ${binary:Version})
-Section: debug
-Priority: extra
-Description: X.Org X server -- AMD/ATI Radeon display driver (debugging symbols)
- This package provides the 'radeon' driver for many AMD/ATI cards.
- .
- This package provides debugging symbols for this X.org X driver.
