@@ -20,6 +20,7 @@ xserver-xorg-video-ati (1:18.0.1-2) UNRELEASED; urgency=medium
     - 3c4c0213 glamor: Use GBM for BO allocation when possible
     - 499d2f9d glamor: Invalidate cached GEM handle in radeon_set_pixmap_bo
     - Build-depend on libgbm-dev
+  * Set source format to 1.0.
 
  -- Timo Aaltonen <tjaalton@debian.org>  Wed, 27 Jun 2018 12:48:44 +0300
 
