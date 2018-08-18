@@ -50,7 +50,7 @@ Description: X.Org X server -- AMD/ATI display driver wrapper
  instead of relying on autodetection.
  .
  More information about X.Org can be found at:
- <URL:http://www.X.org>
+ <URL:https://www.X.org>
  .
  This package is built from the X.org xf86-video-ati driver module.
 
@@ -74,6 +74,6 @@ Description: X.Org X server -- AMD/ATI Radeon display driver
  PITCAIRN, VERDE, OLAND, HAINAN, BONAIRE, KABINI, MULLINS, KAVERI, HAWAII.
  .
  More information about X.Org can be found at:
- <URL:http://www.X.org>
+ <URL:https://www.X.org>
  .
  This package is built from the X.org xf86-video-ati driver module.
