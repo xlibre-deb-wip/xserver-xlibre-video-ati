@@ -1,6 +1,24 @@
 xserver-xorg-video-ati (1:18.0.1-2) UNRELEASED; urgency=medium
 
+  [ Timo Aaltonen ]
   * Switch to dbgsym packages.
+
+  [ Andreas Boll ]
+  * Merge upstream patches to fix a blank / corrupted screen with glamor
+    acceleration (Closes: #902965, #905960, #904995).
+    - 3dcfce8d Bail from dri2_create_buffer2 if we can't get a pixmap
+    - 65c9dfea glamor: Bail CreatePixmap on unsupported pixmap depth
+    - 25836375 Drop unused drmmode_create_bo_pixmap surface parameter
+    - ac18a993 EXA: Remove old RADEONEXACreatePixmap hook
+    - eec4a419 Only initialize libdrm_radeon surface manager for >= R600
+    - ba5d5402 glamor: Don't store radeon_surfaces in pixmaps
+    - 5da2bf43 Factor out radeon_surface_initialize helper
+    - 90b94d40 Move flush from radeon_scanout_do_update to its callers
+    - 6c986e99 Remove throttling from radeon_dri2_copy_region2
+    - 37ba075b Refactor radeon_finish helper
+    - b85b7b11 Add struct radeon_buffer
+    - 3c4c0213 glamor: Use GBM for BO allocation when possible
+    - 499d2f9d glamor: Invalidate cached GEM handle in radeon_set_pixmap_bo
 
  -- Timo Aaltonen <tjaalton@debian.org>  Wed, 27 Jun 2018 12:48:44 +0300
 
