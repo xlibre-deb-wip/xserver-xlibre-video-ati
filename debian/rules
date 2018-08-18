@@ -14,8 +14,8 @@ override_dh_install:
 
 # Debug packages:
 override_dh_strip:
-	dh_strip -p$(XXV)-ati    --dbgsym-migration="$(XXV)-ati-dbg (<< 18.0.1-2~)"
-	dh_strip -p$(XXV)-radeon --dbgsym-migration="$(XXV)-radeon-dbg (<< 18.0.1-2~)"
+	dh_strip -p$(XXV)-ati    --dbgsym-migration="$(XXV)-ati-dbg (<< 1:18.0.1-2~)"
+	dh_strip -p$(XXV)-radeon --dbgsym-migration="$(XXV)-radeon-dbg (<< 1:18.0.1-2~)"
 
 # That's a plugin, use appropriate warning level:
 override_dh_shlibdeps:
