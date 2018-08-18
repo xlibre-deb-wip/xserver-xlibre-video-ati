@@ -5,7 +5,7 @@ xserver-xorg-video-ati (1:18.0.1-2) UNRELEASED; urgency=medium
 
   [ Andreas Boll ]
   * Merge upstream patches to fix a blank / corrupted screen with glamor
-    acceleration (Closes: #902965, #905960, #904995).
+    acceleration (Closes: #902965, #904995, #905395, #905960).
     - 3dcfce8d Bail from dri2_create_buffer2 if we can't get a pixmap
     - 65c9dfea glamor: Bail CreatePixmap on unsupported pixmap depth
     - 25836375 Drop unused drmmode_create_bo_pixmap surface parameter
