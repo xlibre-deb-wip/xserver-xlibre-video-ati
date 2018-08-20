@@ -1,4 +1,4 @@
-xserver-xorg-video-ati (1:18.0.1-2) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:18.0.1-2) unstable; urgency=medium
 
   [ Timo Aaltonen ]
   * Switch to dbgsym packages.
@@ -24,7 +24,7 @@ xserver-xorg-video-ati (1:18.0.1-2) UNRELEASED; urgency=medium
   * Update a bunch of URLs in packaging to https.
   * Bump standards version to 4.2.0.
 
- -- Timo Aaltonen <tjaalton@debian.org>  Wed, 27 Jun 2018 12:48:44 +0300
+ -- Andreas Boll <aboll@debian.org>  Mon, 20 Aug 2018 09:19:30 +0200
 
 xserver-xorg-video-ati (1:18.0.1-1) unstable; urgency=medium
 
