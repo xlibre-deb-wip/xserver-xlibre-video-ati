@@ -1,11 +1,11 @@
-xserver-xorg-video-ati (1:18.1.0-1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:18.1.0-1) unstable; urgency=medium
 
   * New upstream release.
   * Bump debhelper to 11.
   * control: Build-depend on x11proto-dev.
   * control: Bump libdrm-dev build-dep to 2.4.89.
 
- -- Timo Aaltonen <tjaalton@debian.org>  Tue, 18 Sep 2018 10:52:56 +0300
+ -- Timo Aaltonen <tjaalton@debian.org>  Tue, 18 Sep 2018 11:54:58 +0300
 
 xserver-xorg-video-ati (1:18.0.1-2) unstable; urgency=medium
 
