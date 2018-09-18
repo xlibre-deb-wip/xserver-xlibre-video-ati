@@ -50,9 +50,9 @@ radeon_glamor_exchange_buffers(PixmapPtr src,
 Bool
 radeon_glamor_create_screen_resources(ScreenPtr screen)
 {
+	PixmapPtr screen_pixmap = screen->GetScreenPixmap(screen);
 	ScrnInfoPtr scrn = xf86ScreenToScrn(screen);
 	RADEONInfoPtr info = RADEONPTR(scrn);
-	uint32_t handle;
 
 	if (!info->use_glamor)
 		return TRUE;
@@ -62,17 +62,8 @@ radeon_glamor_create_screen_resources(ScreenPtr screen)
 		return FALSE;
 #endif
 
-	if (info->front_buffer->flags & RADEON_BO_FLAGS_GBM)
-		handle = gbm_bo_get_handle(info->front_buffer->bo.gbm).u32;
-	else
-		handle = info->front_buffer->bo.radeon->handle;
-
-	if (!glamor_egl_create_textured_screen(screen, handle,
-					       scrn->displayWidth *
-					       info->pixel_bytes))
-		return FALSE;
-
-	return TRUE;
+	return radeon_glamor_create_textured_pixmap(screen_pixmap,
+						    info->front_buffer);
 }
 
 
@@ -180,17 +171,22 @@ radeon_glamor_create_textured_pixmap(PixmapPtr pixmap, struct radeon_buffer *bo)
 {
 	ScrnInfoPtr scrn = xf86ScreenToScrn(pixmap->drawable.pScreen);
 	RADEONInfoPtr info = RADEONPTR(scrn);
-	uint32_t handle;
 
 	if (!info->use_glamor)
 		return TRUE;
 
-	if (bo->flags & RADEON_BO_FLAGS_GBM)
-		handle = gbm_bo_get_handle(bo->bo.gbm).u32;
-	else
-		handle = bo->bo.radeon->handle;
-
-	return glamor_egl_create_textured_pixmap(pixmap, handle, pixmap->devKind);
+	if (bo->flags & RADEON_BO_FLAGS_GBM) {
+		return glamor_egl_create_textured_pixmap_from_gbm_bo(pixmap,
+								     bo->bo.gbm
+#if XORG_VERSION_CURRENT > XORG_VERSION_NUMERIC(1,19,99,903,0)
+								     , FALSE
+#endif
+								     );
+	} else {
+		return glamor_egl_create_textured_pixmap(pixmap,
+							 bo->bo.radeon->handle,
+							 pixmap->devKind);
+	}
 }
 
 static Bool radeon_glamor_destroy_pixmap(PixmapPtr pixmap)
@@ -261,7 +257,7 @@ radeon_glamor_create_pixmap(ScreenPtr screen, int w, int h, int depth,
 		int stride;
 
 		priv = calloc(1, sizeof (struct radeon_pixmap));
-		if (priv == NULL)
+		if (!priv)
 			goto fallback_pixmap;
 
 		priv->bo = radeon_alloc_pixmap_bo(scrn, w, h, depth, usage,
@@ -406,11 +402,13 @@ radeon_glamor_set_shared_pixmap_backing(PixmapPtr pixmap, void *handle)
 {
 	ScreenPtr screen = pixmap->drawable.pScreen;
 	ScrnInfoPtr scrn = xf86ScreenToScrn(screen);
+	int ihandle = (int)(long)handle;
 
 	if (!radeon_set_shared_pixmap_backing(pixmap, handle, NULL))
 		return FALSE;
 
-	if (!radeon_glamor_create_textured_pixmap(pixmap,
+	if (ihandle != -1 &&
+	    !radeon_glamor_create_textured_pixmap(pixmap,
 						  radeon_get_pixmap_bo(pixmap))) {
 		xf86DrvMsg(scrn->scrnIndex, X_ERROR,
 			   "Failed to get PRIME drawable for glamor pixmap.\n");

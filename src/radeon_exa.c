@@ -150,7 +150,7 @@ Bool RADEONGetPixmapOffsetPitch(PixmapPtr pPix, uint32_t *pitch_offset)
  */
 Bool radeon_transform_is_affine_or_scaled(PictTransformPtr t)
 {
-	if (t == NULL)
+	if (!t)
 		return TRUE;
 	/* the shaders don't handle scaling either */
 	return t->matrix[2][0] == 0 && t->matrix[2][1] == 0 && t->matrix[2][2] == IntToxFixed(1);
@@ -296,11 +296,12 @@ Bool RADEONEXASharePixmapBacking(PixmapPtr ppix, ScreenPtr slave, void **fd_hand
 Bool RADEONEXASetSharedPixmapBacking(PixmapPtr ppix, void *fd_handle)
 {
     struct radeon_exa_pixmap_priv *driver_priv = exaGetPixmapDriverPrivate(ppix);
+    int ihandle = (int)(long)fd_handle;
 
     if (!radeon_set_shared_pixmap_backing(ppix, fd_handle, &driver_priv->surface))
 	return FALSE;
 
-    driver_priv->shared = TRUE;
+    driver_priv->shared = ihandle != -1;
     return TRUE;
 }
 
