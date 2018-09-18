@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:18.1.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Timo Aaltonen <tjaalton@debian.org>  Tue, 18 Sep 2018 10:52:56 +0300
+
 xserver-xorg-video-ati (1:18.0.1-2) unstable; urgency=medium
 
   [ Timo Aaltonen ]
