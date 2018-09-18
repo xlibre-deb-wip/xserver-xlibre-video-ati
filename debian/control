@@ -9,7 +9,7 @@ Build-Depends:
  xserver-xorg-dev (>= 2:1.15.99),
  libgl1-mesa-dev | libgl-dev,
  libgbm-dev,
- libdrm-dev (>= 2.4.58) [!hurd-i386],
+ libdrm-dev (>= 2.4.89) [!hurd-i386],
  libudev-dev [linux-any],
  x11proto-dev,
  xutils-dev (>= 1:7.5+4)
