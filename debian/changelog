@@ -2,6 +2,7 @@ xserver-xorg-video-ati (1:18.1.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
   * Bump debhelper to 11.
+  * control: Build-depend on x11proto-dev.
 
  -- Timo Aaltonen <tjaalton@debian.org>  Tue, 18 Sep 2018 10:52:56 +0300
 
