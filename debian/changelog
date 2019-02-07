@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:18.1.99+git20190207-1) UNRELEASED; urgency=medium
+
+  * New upstream snapshot.
+
+ -- Andreas Boll <aboll@debian.org>  Thu, 07 Feb 2019 21:12:09 +0100
+
 xserver-xorg-video-ati (1:18.1.0-1) unstable; urgency=medium
 
   * New upstream release.
