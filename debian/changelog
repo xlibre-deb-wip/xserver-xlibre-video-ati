@@ -1,6 +1,6 @@
 xserver-xorg-video-ati (1:19.0.1-1) UNRELEASED; urgency=medium
 
-  * New bugfix release.
+  * New bugfix release. (Closes: #924540) (LP: #1822075)
 
  -- Timo Aaltonen <tjaalton@debian.org>  Thu, 28 Mar 2019 13:14:06 +0200
 
