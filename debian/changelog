@@ -1,12 +1,13 @@
-xserver-xorg-video-ati (1:19.0.1-1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:19.0.1-1) unstable; urgency=medium
 
+  [ Timo Aaltonen ]
   * New bugfix release.
     - Use radeon_finish in drmmode_crtc_scanout_update. Fixes a crash if
       using exa acceleration (Closes: #924540).
     - Revert "glamor: Avoid glamor_create_pixmap for pixmaps backing
       windows". Fixes visual corruption issues (LP: #1822075).
 
- -- Timo Aaltonen <tjaalton@debian.org>  Thu, 28 Mar 2019 13:14:06 +0200
+ -- Andreas Boll <aboll@debian.org>  Sat, 06 Apr 2019 21:38:04 +0200
 
 xserver-xorg-video-ati (1:19.0.0-1) unstable; urgency=medium
 
