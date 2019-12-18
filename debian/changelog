@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:19.1.0-2) UNRELEASED; urgency=medium
+
+  * Trim trailing whitespace.
+
+ -- Debian Janitor <janitor@jelmer.uk>  Wed, 18 Dec 2019 19:12:09 +0000
+
 xserver-xorg-video-ati (1:19.1.0-1) unstable; urgency=medium
 
   * New upstream release.
@@ -442,9 +448,9 @@ xserver-xorg-video-ati (1:6.12.191-1) experimental; urgency=low
 xserver-xorg-video-ati (1:6.12.99+git20100201.a887818f-1) experimental; urgency=low
 
   * New upstream release snapshot.
-    + EXA now enabled by default, closes: #502970. 
-    + Fix display watermark, closes: #540954. 
-    + Add KMS support, closes: #561526, #567999. 
+    + EXA now enabled by default, closes: #502970.
+    + Fix display watermark, closes: #540954.
+    + Add KMS support, closes: #561526, #567999.
   * Bump libdrm-dev dependency to 2.4.17 to get libdrm-radeon.
   * Build-depend on x11proto-dri2-dev for DRI2 support.
 
@@ -529,7 +535,7 @@ xserver-xorg-video-ati (1:6.12.2-2) unstable; urgency=low
 
   [ David Nusinow ]
   * Add a note in NEWS.Debian about firmware-linux
-  * Remove 01_gen_pci_ids.diff patch as the server just uses a built-in 
+  * Remove 01_gen_pci_ids.diff patch as the server just uses a built-in
     table to choose drivers now
 
  -- Brice Goglin <bgoglin@debian.org>  Wed, 13 May 2009 09:08:21 +0200
@@ -575,7 +581,7 @@ xserver-xorg-video-ati (1:6.9.0.91-1) experimental; urgency=low
 xserver-xorg-video-ati (1:6.9.0+git20081129.783cdb73-1) experimental; urgency=low
 
   * Pull upstream snapshot, up to commit 783cdb73.
-    + Add AGPMode quirk table, closes: #461144, #462590, #467460. 
+    + Add AGPMode quirk table, closes: #461144, #462590, #467460.
 
  -- Brice Goglin <bgoglin@debian.org>  Sat, 29 Nov 2008 10:52:27 +0100
 
