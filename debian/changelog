@@ -1,3 +1,10 @@
+xserver-xorg-video-ati (1:19.1.0-3) UNRELEASED; urgency=medium
+
+  * fix-rotation.diff: Fix crash on rotation. (Closes: #1009325)
+    (LP: #1970473)
+
+ -- Timo Aaltonen <tjaalton@debian.org>  Fri, 08 Jul 2022 12:51:16 +0300
+
 xserver-xorg-video-ati (1:19.1.0-2) unstable; urgency=medium
 
   * Team upload
