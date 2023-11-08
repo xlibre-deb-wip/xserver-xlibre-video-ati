@@ -7,7 +7,7 @@ Build-Depends:
  quilt,
  pkg-config,
  xserver-xorg-dev (>= 2:1.15.99),
- libgl1-mesa-dev | libgl-dev,
+ libgl-dev,
  libgbm-dev,
  libdrm-dev (>= 2.4.89) [!hurd-i386],
  libudev-dev [linux-any],
