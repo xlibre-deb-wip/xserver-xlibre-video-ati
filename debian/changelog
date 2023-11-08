@@ -1,4 +1,4 @@
-xserver-xorg-video-ati (1:22.0.0-1) UNRELEASED; urgency=medium
+xserver-xorg-video-ati (1:22.0.0-1) unstable; urgency=medium
 
   * New upstream release.
   * Update signing-key.asc.
@@ -7,7 +7,7 @@ xserver-xorg-video-ati (1:22.0.0-1) UNRELEASED; urgency=medium
   * control: Drop obsolete build-dependency libgl1-mesa-dev, libgl-dev
     is enough.
 
- -- Timo Aaltonen <tjaalton@debian.org>  Wed, 08 Nov 2023 14:52:25 +0200
+ -- Timo Aaltonen <tjaalton@debian.org>  Wed, 08 Nov 2023 15:07:33 +0200
 
 xserver-xorg-video-ati (1:19.1.0-3) unstable; urgency=medium
 
