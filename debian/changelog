@@ -1,3 +1,9 @@
+xserver-xorg-video-ati (1:22.0.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Timo Aaltonen <tjaalton@debian.org>  Wed, 08 Nov 2023 14:52:25 +0200
+
 xserver-xorg-video-ati (1:19.1.0-3) unstable; urgency=medium
 
   * fix-rotation.diff: Fix crash on rotation. (Closes: #1009325)
