@@ -24,7 +24,7 @@
 AC_PREREQ([2.60])
 AC_INIT([xf86-video-ati],
         [22.0.0],
-        [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg&component=Driver/Radeon],
+        [https://gitlab.freedesktop.org/xorg/driver/xf86-video-ati/-/issues],
         [xf86-video-ati])
 
 AC_CONFIG_SRCDIR([Makefile.am])
@@ -254,11 +254,11 @@ b = bswap16(a);
 	if test "$USE_SYS_ENDIAN_H" = "yes" ; then
 	    AC_DEFINE([USE_SYS_ENDIAN_H], 1, 
 		[Define to use byteswap macros from <sys/endian.h>])
-	    AC_DEFINE_UNQUOTED([bswap_16], ${BSWAP}16, 
+	    AC_DEFINE_UNQUOTED([radeon_bswap_16], ${BSWAP}16, 
 			[Define to 16-bit byteswap macro])
-	    AC_DEFINE_UNQUOTED([bswap_32], ${BSWAP}32, 
+	    AC_DEFINE_UNQUOTED([radeon_bswap_32], ${BSWAP}32, 
 			[Define to 32-bit byteswap macro])
-	    AC_DEFINE_UNQUOTED([bswap_64], ${BSWAP}64, 
+	    AC_DEFINE_UNQUOTED([radeon_bswap_64], ${BSWAP}64, 
 			[Define to 64-bit byteswap macro])
 	fi
 fi
@@ -270,13 +270,13 @@ AC_SUBST([DRIVER_NAME])
 
 AC_MSG_NOTICE(
 [The atimisc sub-driver has been split out to xf86-video-mach64:]
-[    git://anongit.freedesktop.org/git/xorg/driver/xf86-video-mach64]
+[    https://gitlab.freedesktop.org/xorg/driver/xf86-video-mach64]
 [Please install that driver as well for mach64-based cards.]
 )
 
 AC_MSG_NOTICE(
 [The r128 sub-driver has been split out to xf86-video-r128:]
-[    git://anongit.freedesktop.org/git/xorg/driver/xf86-video-r128]
+[    https://gitlab.freedesktop.org/xorg/driver/xf86-video-r128]
 [Please install that driver as well for rage128-based cards.]
 )
 
