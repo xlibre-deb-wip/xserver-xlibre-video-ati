@@ -142,7 +142,30 @@ void RADEONCopySwap(uint8_t *dst, uint8_t *src, unsigned int size, int swap)
 	    return;
         }
     case RADEON_HOST_DATA_SWAP_32BIT:
-        {
+	if (((uintptr_t)dst & 1) || ((uintptr_t)src & 1)) {
+	    uint8_t *d = (uint8_t *)dst;
+	    uint8_t *s = (uint8_t *)src;
+	    unsigned int nwords = size >> 2;
+
+	    for (; nwords > 0; --nwords, d+=4, s+=4) {
+	        d[0] = s[3];
+		d[1] = s[2];
+		d[2] = s[1];
+		d[3] = s[0];
+	    }
+	    return;
+        } else if (((uintptr_t)dst & 3) || ((uintptr_t)src & 3)) {
+	    /* copy 16bit wise */
+	    uint16_t *d = (uint16_t *)dst;
+	    uint16_t *s = (uint16_t *)src;
+	    unsigned int nwords = size >> 2;
+
+	    for (; nwords > 0; --nwords, d+=2, s+=2) {
+	        d[0] = ((s[1] >> 8) & 0xff) | ((s[1] & 0xff) << 8);
+	        d[1] = ((s[0] >> 8) & 0xff) | ((s[0] & 0xff) << 8);
+	    }
+	    return;
+	} else {
 	    unsigned int *d = (unsigned int *)dst;
 	    unsigned int *s = (unsigned int *)src;
 	    unsigned int nwords = size >> 2;
@@ -206,22 +229,12 @@ Bool RADEONAccelInit(ScreenPtr pScreen)
 static void RADEONInit3DEngineInternal(ScrnInfoPtr pScrn)
 {
     RADEONInfoPtr  info       = RADEONPTR(pScrn);
-    uint32_t gb_tile_config, vap_cntl;
+    uint32_t vap_cntl;
 
     info->accel_state->texW[0] = info->accel_state->texH[0] =
 	info->accel_state->texW[1] = info->accel_state->texH[1] = 1;
 
     if (IS_R300_3D || IS_R500_3D) {
-
-	gb_tile_config = (R300_ENABLE_TILING | R300_TILE_SIZE_16);
-
-	switch(info->accel_state->num_gb_pipes) {
-	case 2: gb_tile_config |= R300_PIPE_COUNT_R300; break;
-	case 3: gb_tile_config |= R300_PIPE_COUNT_R420_3P; break;
-	case 4: gb_tile_config |= R300_PIPE_COUNT_R420; break;
-	default:
-	case 1: gb_tile_config |= R300_PIPE_COUNT_RV350; break;
-	}
 
 	BEGIN_RING(2*3);
 	OUT_RING_REG(R300_RB3D_DSTCACHE_CTLSTAT, R300_DC_FLUSH_3D | R300_DC_FREE_3D);

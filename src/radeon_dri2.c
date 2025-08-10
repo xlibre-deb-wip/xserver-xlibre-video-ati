@@ -111,7 +111,6 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
     PixmapPtr pixmap;
     int flags;
     unsigned front_width;
-    uint32_t tiling = 0;
     unsigned aligned_width = drawable->width;
     unsigned height = drawable->height;
     Bool is_glamor_pixmap = FALSE;
@@ -217,13 +216,6 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
 	    flags = 0;
 	}
 
-	if (flags & RADEON_CREATE_PIXMAP_TILING_MICRO)
-	    tiling |= RADEON_TILING_MICRO;
-	if (flags & RADEON_CREATE_PIXMAP_TILING_MICRO_SQUARE)
-	    tiling |= RADEON_TILING_MICRO_SQUARE;
-	if (flags & RADEON_CREATE_PIXMAP_TILING_MACRO)
-	    tiling |= RADEON_TILING_MACRO;
-
 	if (aligned_width == front_width)
 	    aligned_width = pScrn->virtualX;
 
@@ -281,7 +273,7 @@ radeon_dri2_create_buffer2(ScreenPtr pScreen,
 
 error:
     free(buffers);
-    (*pScreen->DestroyPixmap)(pixmap);
+    dixDestroyPixmap(pixmap, 0);
     return NULL;
 }
 
@@ -307,7 +299,7 @@ radeon_dri2_destroy_buffer2(ScreenPtr pScreen,
         if (private->refcnt == 0)
         {
 	    if (private->pixmap)
-                (*pScreen->DestroyPixmap)(private->pixmap);
+                dixDestroyPixmap(private->pixmap, 0);
 
             free(buffers->driverPrivate);
             free(buffers);
@@ -657,10 +649,10 @@ update_front(DrawablePtr draw, DRI2BufferPtr front)
     if (!info->use_glamor)
 	exaMoveInPixmap(pixmap);
     if (!radeon_get_flink_name(pRADEONEnt, pixmap, &front->name)) {
-	(*draw->pScreen->DestroyPixmap)(pixmap);
+        dixDestroyPixmap(pixmap, 0);
 	return FALSE;
     }
-    (*draw->pScreen->DestroyPixmap)(priv->pixmap);
+    dixDestroyPixmap(priv->pixmap, 0);
     front->pitch = pixmap->devKind;
     front->cpp = pixmap->drawable.bitsPerPixel / 8;
     priv->pixmap = pixmap;
