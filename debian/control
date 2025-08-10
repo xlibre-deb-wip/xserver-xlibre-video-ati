@@ -1,12 +1,12 @@
-Source: xserver-xorg-video-ati
+Source: xserver-xlibre-video-ati
 Section: x11
 Priority: optional
-Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Maintainer: apebl <a@pebl.cc>
 Build-Depends:
  debhelper-compat (= 12),
  quilt,
  pkg-config,
- xserver-xorg-dev (>= 2:1.15.99),
+ xserver-xlibre-dev (>= 2:1.15.99),
  libgl-dev,
  libgbm-dev,
  libdrm-dev (>= 2.4.89) [!hurd-i386],
@@ -14,21 +14,23 @@ Build-Depends:
  x11proto-dev,
  xutils-dev (>= 1:7.5+4)
 Standards-Version: 4.6.2
-Vcs-Git: https://salsa.debian.org/xorg-team/driver/xserver-xorg-video-ati.git
-Vcs-Browser: https://salsa.debian.org/xorg-team/driver/xserver-xorg-video-ati.git
-Homepage: https://wiki.freedesktop.org/xorg/RadeonFeature/
+Vcs-Git: https://github.com/xlibre-deb/xserver-xlibre-video-ati.git
+Vcs-Browser: https://github.com/xlibre-deb/xserver-xlibre-video-ati
+Homepage: https://github.com/X11Libre
 
-Package: xserver-xorg-video-ati
+Package: xserver-xlibre-video-ati
 Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${xviddriver:Depends},
- xserver-xorg-video-radeon
+ xserver-xlibre-video-radeon
 Suggests:
  xserver-xorg-video-r128,
  xserver-xorg-video-mach64
-Provides: ${xviddriver:Provides}
+Provides:
+ xserver-xorg-video-ati,
+ ${xviddriver:Provides}
 Description: X.Org X server -- AMD/ATI display driver wrapper
  This package provides the 'ati' driver for the AMD/ATI Mach64, Rage128,
  Radeon, FireGL, FireMV, FirePro and FireStream series. This driver is
@@ -44,14 +46,18 @@ Description: X.Org X server -- AMD/ATI display driver wrapper
  <URL:https://www.X.org>
  .
  This package is built from the X.org xf86-video-ati driver module.
+Conflicts:
+ xserver-xorg-video-ati,
 
-Package: xserver-xorg-video-radeon
+Package: xserver-xlibre-video-radeon
 Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
  ${xviddriver:Depends}
-Provides: ${xviddriver:Provides}
+Provides:
+ xserver-xorg-video-radeon,
+ ${xviddriver:Provides}
 Suggests: firmware-amd-graphics
 Description: X.Org X server -- AMD/ATI Radeon display driver
  This package provides the 'radeon' driver for the AMD/ATI cards. The
@@ -68,3 +74,5 @@ Description: X.Org X server -- AMD/ATI Radeon display driver
  <URL:https://www.X.org>
  .
  This package is built from the X.org xf86-video-ati driver module.
+Conflicts:
+ xserver-xorg-video-radeon,
