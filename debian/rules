@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-XXV=xserver-xorg-video
+XXV=xserver-xlibre-video
 
 override_dh_auto_configure:
 	dh_auto_configure --builddirectory=build/ -- \
@@ -16,8 +16,8 @@ override_dh_missing:
 
 # Debug packages:
 override_dh_strip:
-	dh_strip -p$(XXV)-ati    --dbgsym-migration="$(XXV)-ati-dbg (<< 1:18.0.1-2~)"
-	dh_strip -p$(XXV)-radeon --dbgsym-migration="$(XXV)-radeon-dbg (<< 1:18.0.1-2~)"
+	dh_strip -p$(XXV)-ati
+	dh_strip -p$(XXV)-radeon
 
 # That's a plugin, use appropriate warning level:
 override_dh_shlibdeps:
