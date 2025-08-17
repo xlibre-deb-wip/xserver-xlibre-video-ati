@@ -29,7 +29,7 @@ Suggests:
  xserver-xorg-video-r128,
  xserver-xorg-video-mach64
 Provides:
- xserver-xorg-video-ati,
+ xserver-xorg-video-ati (= ${binary:Version}),
  ${xviddriver:Provides}
 Description: XLibre X server -- AMD/ATI display driver wrapper
  This package provides the 'ati' driver for the AMD/ATI Mach64, Rage128,
@@ -56,7 +56,7 @@ Depends:
  ${misc:Depends},
  ${xviddriver:Depends}
 Provides:
- xserver-xorg-video-radeon,
+ xserver-xorg-video-radeon (= ${binary:Version}),
  ${xviddriver:Provides}
 Suggests: firmware-amd-graphics
 Description: XLibre X server -- AMD/ATI Radeon display driver
