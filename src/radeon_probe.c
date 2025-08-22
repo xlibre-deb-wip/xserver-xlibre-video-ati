@@ -49,11 +49,7 @@
 
 #include "xf86drmMode.h"
 
-#if XORG_VERSION_CURRENT >= XORG_VERSION_NUMERIC(1,19,99,1,0)
 #include <xf86Pci.h>
-#else
-#include "dri.h"
-#endif
 
 #if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
 #include <xf86_OSproc.h>
@@ -168,7 +164,7 @@ radeon_get_scrninfo(int entity_num, void *pci_dev)
 	xf86SetEntityInstanceForScreen(pScrn, pEnt->index, xf86GetNumEntityInstances(pEnt->index) - 1);
 
         if (!pPriv->ptr)
-            pPriv->ptr = xnfcalloc(sizeof(RADEONEntRec), 1);
+            pPriv->ptr = XNFcallocarray(sizeof(RADEONEntRec), 1);
     }
 
     free(pEnt);
@@ -197,10 +193,8 @@ RADEONDriverFunc(ScrnInfoPtr scrn, xorgDriverFuncOp op, void *data)
 	    flag = (CARD32 *)data;
 	    (*flag) = 0;
 	    return TRUE;
-#if XORG_VERSION_CURRENT > XORG_VERSION_NUMERIC(1,15,99,0,0)
 	case SUPPORTS_SERVER_FDS:
 	    return TRUE;
-#endif
 	default:
 	    return FALSE;
     }
@@ -264,7 +258,7 @@ radeon_platform_probe(DriverPtr pDriver,
 	xf86SetEntityInstanceForScreen(pScrn, pEnt->index, xf86GetNumEntityInstances(pEnt->index) - 1);
 
         if (!pPriv->ptr) {
-            pPriv->ptr = xnfcalloc(sizeof(RADEONEntRec), 1);
+            pPriv->ptr = XNFcallocarray(sizeof(RADEONEntRec), 1);
             pRADEONEnt = pPriv->ptr;
         } else {
             pRADEONEnt = pPriv->ptr;

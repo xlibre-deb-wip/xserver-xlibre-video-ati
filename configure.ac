@@ -57,11 +57,12 @@ fi
 AH_TOP([#include "xorg-server.h"])
 
 # Define a configure option for an alternate module directory
+PKG_PROG_PKG_CONFIG([0.25])
 AC_ARG_WITH(xorg-module-dir,
             AS_HELP_STRING([--with-xorg-module-dir=DIR],
-                           [Default xorg module directory [[default=$libdir/xorg/modules]]]),
+                           [Default xorg module directory]),
             [moduledir="$withval"],
-            [moduledir="$libdir/xorg/modules"])
+            [moduledir=`$PKG_CONFIG --variable=moduledir xorg-server`])
 
 # Store the list of server defined optional extensions in REQUIRED_MODULES
 XORG_DRIVER_CHECK_EXT(RANDR, randrproto)
@@ -133,12 +134,6 @@ if test "x$GLAMOR" != "xno"; then
 			      [#include "xorg-server.h"
 			       #include "glamor.h"])
 
-		AC_CHECK_DECL(glamor_egl_destroy_textured_pixmap,
-			      [AC_DEFINE(HAVE_GLAMOR_EGL_DESTROY_TEXTURED_PIXMAP, 1,
-					 [Have glamor_egl_destroy_textured_pixmap API])], [],
-			      [#include "xorg-server.h"
-			       #include "glamor.h"])
-
 		AC_CHECK_DECL(glamor_finish,
 			      [AC_DEFINE(HAVE_GLAMOR_FINISH, 1,
 					 [Have glamor_finish API])],
@@ -165,16 +160,6 @@ AC_CHECK_DECL(RegionDuplicate,
 	      [Have RegionDuplicate API])], [],
 	      [#include <xorg-server.h>
 	       #include <regionstr.h>])
-
-AC_CHECK_DECL(fbGlyphs,
-	      [AC_DEFINE(HAVE_FBGLYPHS, 1, [Have fbGlyphs API])], [],
-	      [#include <X11/Xmd.h>
-	       #include <X11/Xfuncproto.h>
-	       #include <X11/extensions/renderproto.h>
-	       #include <xorg-server.h>
-	       #include <picture.h>
-	       #include <glyphstr.h>
-	       #include <fbpict.h>])
 
 AC_CHECK_DECL(xf86CursorResetCursor,
 	      [AC_DEFINE(HAVE_XF86_CURSOR_RESET_CURSOR, 1,

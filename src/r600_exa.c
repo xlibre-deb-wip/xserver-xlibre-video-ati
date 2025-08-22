@@ -727,20 +727,20 @@ struct formatinfo {
 };
 
 static struct formatinfo R600TexFormats[] = {
-    {PICT_a2r10g10b10,	FMT_2_10_10_10},
-    {PICT_x2r10g10b10,	FMT_2_10_10_10},
-    {PICT_a2b10g10r10,	FMT_2_10_10_10},
-    {PICT_x2b10g10r10,	FMT_2_10_10_10},
-    {PICT_a8r8g8b8,	FMT_8_8_8_8},
-    {PICT_x8r8g8b8,	FMT_8_8_8_8},
-    {PICT_a8b8g8r8,	FMT_8_8_8_8},
-    {PICT_x8b8g8r8,	FMT_8_8_8_8},
-    {PICT_b8g8r8a8,	FMT_8_8_8_8},
-    {PICT_b8g8r8x8,	FMT_8_8_8_8},
-    {PICT_r5g6b5,	FMT_5_6_5},
-    {PICT_a1r5g5b5,	FMT_1_5_5_5},
-    {PICT_x1r5g5b5,     FMT_1_5_5_5},
-    {PICT_a8,		FMT_8},
+    {PIXMAN_a2r10g10b10,	FMT_2_10_10_10},
+    {PIXMAN_x2r10g10b10,	FMT_2_10_10_10},
+    {PIXMAN_a2b10g10r10,	FMT_2_10_10_10},
+    {PIXMAN_x2b10g10r10,	FMT_2_10_10_10},
+    {PIXMAN_a8r8g8b8,	FMT_8_8_8_8},
+    {PIXMAN_x8r8g8b8,	FMT_8_8_8_8},
+    {PIXMAN_a8b8g8r8,	FMT_8_8_8_8},
+    {PIXMAN_x8b8g8r8,	FMT_8_8_8_8},
+    {PIXMAN_b8g8r8a8,	FMT_8_8_8_8},
+    {PIXMAN_b8g8r8x8,	FMT_8_8_8_8},
+    {PIXMAN_r5g6b5,	FMT_5_6_5},
+    {PIXMAN_a1r5g5b5,	FMT_1_5_5_5},
+    {PIXMAN_x1r5g5b5,     FMT_1_5_5_5},
+    {PIXMAN_a8,		FMT_8},
 };
 
 static uint32_t R600GetBlendCntl(int op, PicturePtr pMask, uint32_t dst_format)
@@ -753,7 +753,7 @@ static uint32_t R600GetBlendCntl(int op, PicturePtr pMask, uint32_t dst_format)
     /* If there's no dst alpha channel, adjust the blend op so that we'll treat
      * it as always 1.
      */
-    if (PICT_FORMAT_A(dst_format) == 0 && R600BlendOp[op].dst_alpha) {
+    if (PIXMAN_FORMAT_A(dst_format) == 0 && R600BlendOp[op].dst_alpha) {
 	if (sblend == (BLEND_DST_ALPHA << COLOR_SRCBLEND_shift))
 	    sblend = (BLEND_ONE << COLOR_SRCBLEND_shift);
 	else if (sblend == (BLEND_ONE_MINUS_DST_ALPHA << COLOR_SRCBLEND_shift))
@@ -786,28 +786,28 @@ static uint32_t R600GetBlendCntl(int op, PicturePtr pMask, uint32_t dst_format)
 static Bool R600GetDestFormat(PicturePtr pDstPicture, uint32_t *dst_format)
 {
     switch (pDstPicture->format) {
-    case PICT_a2r10g10b10:
-    case PICT_x2r10g10b10:
-    case PICT_a2b10g10r10:
-    case PICT_x2b10g10r10:
+    case PIXMAN_a2r10g10b10:
+    case PIXMAN_x2r10g10b10:
+    case PIXMAN_a2b10g10r10:
+    case PIXMAN_x2b10g10r10:
 	*dst_format = COLOR_2_10_10_10;
 	break;
-    case PICT_a8r8g8b8:
-    case PICT_x8r8g8b8:
-    case PICT_a8b8g8r8:
-    case PICT_x8b8g8r8:
-    case PICT_b8g8r8a8:
-    case PICT_b8g8r8x8:
+    case PIXMAN_a8r8g8b8:
+    case PIXMAN_x8r8g8b8:
+    case PIXMAN_a8b8g8r8:
+    case PIXMAN_x8b8g8r8:
+    case PIXMAN_b8g8r8a8:
+    case PIXMAN_b8g8r8x8:
 	*dst_format = COLOR_8_8_8_8;
 	break;
-    case PICT_r5g6b5:
+    case PIXMAN_r5g6b5:
 	*dst_format = COLOR_5_6_5;
 	break;
-    case PICT_a1r5g5b5:
-    case PICT_x1r5g5b5:
+    case PIXMAN_a1r5g5b5:
+    case PIXMAN_x1r5g5b5:
 	*dst_format = COLOR_1_5_5_5;
 	break;
-    case PICT_a8:
+    case PIXMAN_a8:
 	*dst_format = COLOR_8;
 	break;
     default:
@@ -846,8 +846,8 @@ static Bool R600CheckCompositeTexture(PicturePtr pPict,
      * clipping.
      */
     /* FIXME R6xx */
-    if (pPict->transform != 0 && repeatType == RepeatNone && PICT_FORMAT_A(pPict->format) == 0) {
-	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PICT_FORMAT_A(pDstPict->format) == 0)))
+    if (pPict->transform != 0 && repeatType == RepeatNone && PIXMAN_FORMAT_A(pPict->format) == 0) {
+	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PIXMAN_FORMAT_A(pDstPict->format) == 0)))
 	    RADEON_FALLBACK(("REPEAT_NONE unsupported for transformed xRGB source\n"));
     }
 
@@ -916,50 +916,50 @@ static Bool R600TextureSetup(PicturePtr pPict, PixmapPtr pPix,
 
     /* component swizzles */
     switch (pPict->format) {
-    case PICT_a2r10g10b10:
-    case PICT_a1r5g5b5:
-    case PICT_a8r8g8b8:
+    case PIXMAN_a2r10g10b10:
+    case PIXMAN_a1r5g5b5:
+    case PIXMAN_a8r8g8b8:
 	pix_r = SQ_SEL_Z; /* R */
 	pix_g = SQ_SEL_Y; /* G */
 	pix_b = SQ_SEL_X; /* B */
 	pix_a = SQ_SEL_W; /* A */
 	break;
-    case PICT_a2b10g10r10:
-    case PICT_a8b8g8r8:
+    case PIXMAN_a2b10g10r10:
+    case PIXMAN_a8b8g8r8:
 	pix_r = SQ_SEL_X; /* R */
 	pix_g = SQ_SEL_Y; /* G */
 	pix_b = SQ_SEL_Z; /* B */
 	pix_a = SQ_SEL_W; /* A */
 	break;
-    case PICT_x2b10g10r10:
-    case PICT_x8b8g8r8:
+    case PIXMAN_x2b10g10r10:
+    case PIXMAN_x8b8g8r8:
 	pix_r = SQ_SEL_X; /* R */
 	pix_g = SQ_SEL_Y; /* G */
 	pix_b = SQ_SEL_Z; /* B */
 	pix_a = SQ_SEL_1; /* A */
 	break;
-    case PICT_b8g8r8a8:
+    case PIXMAN_b8g8r8a8:
 	pix_r = SQ_SEL_Y; /* R */
 	pix_g = SQ_SEL_Z; /* G */
 	pix_b = SQ_SEL_W; /* B */
 	pix_a = SQ_SEL_X; /* A */
 	break;
-    case PICT_b8g8r8x8:
+    case PIXMAN_b8g8r8x8:
 	pix_r = SQ_SEL_Y; /* R */
 	pix_g = SQ_SEL_Z; /* G */
 	pix_b = SQ_SEL_W; /* B */
 	pix_a = SQ_SEL_1; /* A */
 	break;
-    case PICT_x2r10g10b10:
-    case PICT_x1r5g5b5:
-    case PICT_x8r8g8b8:
-    case PICT_r5g6b5:
+    case PIXMAN_x2r10g10b10:
+    case PIXMAN_x1r5g5b5:
+    case PIXMAN_x8r8g8b8:
+    case PIXMAN_r5g6b5:
 	pix_r = SQ_SEL_Z; /* R */
 	pix_g = SQ_SEL_Y; /* G */
 	pix_b = SQ_SEL_X; /* B */
 	pix_a = SQ_SEL_1; /* A */
 	break;
-    case PICT_a8:
+    case PIXMAN_a8:
 	pix_r = SQ_SEL_0; /* R */
 	pix_g = SQ_SEL_0; /* G */
 	pix_b = SQ_SEL_0; /* B */
@@ -971,18 +971,18 @@ static Bool R600TextureSetup(PicturePtr pPict, PixmapPtr pPix,
 
     if (unit == 0) {
 	if (!accel_state->msk_pic) {
-	    if (PICT_FORMAT_RGB(pPict->format) == 0) {
+	    if (PIXMAN_FORMAT_RGB(pPict->format) == 0) {
 		pix_r = SQ_SEL_0;
 		pix_g = SQ_SEL_0;
 		pix_b = SQ_SEL_0;
 	    }
 
-	    if (PICT_FORMAT_A(pPict->format) == 0)
+	    if (PIXMAN_FORMAT_A(pPict->format) == 0)
 		pix_a = SQ_SEL_1;
 	} else {
 	    if (accel_state->component_alpha) {
 		if (accel_state->src_alpha) {
-		    if (PICT_FORMAT_A(pPict->format) == 0) {
+		    if (PIXMAN_FORMAT_A(pPict->format) == 0) {
 			pix_r = SQ_SEL_1;
 			pix_g = SQ_SEL_1;
 			pix_b = SQ_SEL_1;
@@ -993,26 +993,26 @@ static Bool R600TextureSetup(PicturePtr pPict, PixmapPtr pPix,
 			pix_b = pix_a;
 		    }
 		} else {
-		    if (PICT_FORMAT_A(pPict->format) == 0)
+		    if (PIXMAN_FORMAT_A(pPict->format) == 0)
 			pix_a = SQ_SEL_1;
 		}
 	    } else {
-		if (PICT_FORMAT_RGB(pPict->format) == 0) {
+		if (PIXMAN_FORMAT_RGB(pPict->format) == 0) {
 		    pix_r = SQ_SEL_0;
 		    pix_g = SQ_SEL_0;
 		    pix_b = SQ_SEL_0;
 		}
 
-		if (PICT_FORMAT_A(pPict->format) == 0)
+		if (PIXMAN_FORMAT_A(pPict->format) == 0)
 		    pix_a = SQ_SEL_1;
 	    }
 	}
     } else {
 	if (accel_state->component_alpha) {
-	    if (PICT_FORMAT_A(pPict->format) == 0)
+	    if (PIXMAN_FORMAT_A(pPict->format) == 0)
 		pix_a = SQ_SEL_1;
 	} else {
-	    if (PICT_FORMAT_A(pPict->format) == 0) {
+	    if (PIXMAN_FORMAT_A(pPict->format) == 0) {
 		pix_r = SQ_SEL_1;
 		pix_g = SQ_SEL_1;
 		pix_b = SQ_SEL_1;
@@ -1209,46 +1209,46 @@ static void R600SetSolidConsts(ScrnInfoPtr pScrn, float *buf, int format, uint32
 
     /* component swizzles */
     switch (format) {
-	case PICT_a1r5g5b5:
-	case PICT_a8r8g8b8:
+	case PIXMAN_a1r5g5b5:
+	case PIXMAN_a8r8g8b8:
 	    pix_r = zf; /* R */
 	    pix_g = yf; /* G */
 	    pix_b = xf; /* B */
 	    pix_a = wf; /* A */
 	    break;
-	case PICT_a8b8g8r8:
+	case PIXMAN_a8b8g8r8:
 	    pix_r = xf; /* R */
 	    pix_g = yf; /* G */
 	    pix_b = zf; /* B */
 	    pix_a = wf; /* A */
 	    break;
-	case PICT_x8b8g8r8:
+	case PIXMAN_x8b8g8r8:
 	    pix_r = xf; /* R */
 	    pix_g = yf; /* G */
 	    pix_b = zf; /* B */
 	    pix_a = 1.0; /* A */
 	    break;
-	case PICT_b8g8r8a8:
+	case PIXMAN_b8g8r8a8:
 	    pix_r = yf; /* R */
 	    pix_g = zf; /* G */
 	    pix_b = wf; /* B */
 	    pix_a = xf; /* A */
 	    break;
-	case PICT_b8g8r8x8:
+	case PIXMAN_b8g8r8x8:
 	    pix_r = yf; /* R */
 	    pix_g = zf; /* G */
 	    pix_b = wf; /* B */
 	    pix_a = 1.0; /* A */
 	    break;
-	case PICT_x1r5g5b5:
-	case PICT_x8r8g8b8:
-	case PICT_r5g6b5:
+	case PIXMAN_x1r5g5b5:
+	case PIXMAN_x8r8g8b8:
+	case PIXMAN_r5g6b5:
 	    pix_r = zf; /* R */
 	    pix_g = yf; /* G */
 	    pix_b = xf; /* B */
 	    pix_a = 1.0; /* A */
 	    break;
-	case PICT_a8:
+	case PIXMAN_a8:
 	    pix_r = 0.0; /* R */
 	    pix_g = 0.0; /* G */
 	    pix_b = 0.0; /* B */
@@ -1260,13 +1260,13 @@ static void R600SetSolidConsts(ScrnInfoPtr pScrn, float *buf, int format, uint32
 
     if (unit == 0) {
 	if (!accel_state->msk_pic) {
-	    if (PICT_FORMAT_RGB(format) == 0) {
+	    if (PIXMAN_FORMAT_RGB(format) == 0) {
 		pix_r = 0.0;
 		pix_g = 0.0;
 		pix_b = 0.0;
 	    }
 
-	    if (PICT_FORMAT_A(format) == 0)
+	    if (PIXMAN_FORMAT_A(format) == 0)
 		pix_a = 1.0;
 	} else {
 	    if (accel_state->component_alpha) {
@@ -1276,7 +1276,7 @@ static void R600SetSolidConsts(ScrnInfoPtr pScrn, float *buf, int format, uint32
 					pix_b / pix_a, pix_a / pix_a };
 		    r600_set_blend_color(pScrn, cblend);
 
-		    if (PICT_FORMAT_A(format) == 0) {
+		    if (PIXMAN_FORMAT_A(format) == 0) {
 			pix_r = 1.0;
 			pix_g = 1.0;
 			pix_b = 1.0;
@@ -1287,26 +1287,26 @@ static void R600SetSolidConsts(ScrnInfoPtr pScrn, float *buf, int format, uint32
 			pix_b = pix_a;
 		    }
 		} else {
-		    if (PICT_FORMAT_A(format) == 0)
+		    if (PIXMAN_FORMAT_A(format) == 0)
 			pix_a = 1.0;
 		}
 	    } else {
-		if (PICT_FORMAT_RGB(format) == 0) {
+		if (PIXMAN_FORMAT_RGB(format) == 0) {
 		    pix_r = 0;
 		    pix_g = 0;
 		    pix_b = 0;
 		}
 
-		if (PICT_FORMAT_A(format) == 0)
+		if (PIXMAN_FORMAT_A(format) == 0)
 		    pix_a = 1.0;
 	    }
 	}
     } else {
 	if (accel_state->component_alpha) {
-	    if (PICT_FORMAT_A(format) == 0)
+	    if (PIXMAN_FORMAT_A(format) == 0)
 		pix_a = 1.0;
 	} else {
-	    if (PICT_FORMAT_A(format) == 0) {
+	    if (PIXMAN_FORMAT_A(format) == 0) {
 		pix_r = 1.0;
 		pix_g = 1.0;
 		pix_b = 1.0;
@@ -1478,29 +1478,29 @@ static Bool R600PrepareComposite(int op, PicturePtr pSrcPicture,
     cb_conf.surface = accel_state->dst_obj.surface;
 
     switch (pDstPicture->format) {
-    case PICT_a2r10g10b10:
-    case PICT_x2r10g10b10:
-    case PICT_a8r8g8b8:
-    case PICT_x8r8g8b8:
-    case PICT_a1r5g5b5:
-    case PICT_x1r5g5b5:
+    case PIXMAN_a2r10g10b10:
+    case PIXMAN_x2r10g10b10:
+    case PIXMAN_a8r8g8b8:
+    case PIXMAN_x8r8g8b8:
+    case PIXMAN_a1r5g5b5:
+    case PIXMAN_x1r5g5b5:
     default:
 	cb_conf.comp_swap = 1; /* ARGB */
 	break;
-    case PICT_a2b10g10r10:
-    case PICT_x2b10g10r10:
-    case PICT_a8b8g8r8:
-    case PICT_x8b8g8r8:
+    case PIXMAN_a2b10g10r10:
+    case PIXMAN_x2b10g10r10:
+    case PIXMAN_a8b8g8r8:
+    case PIXMAN_x8b8g8r8:
 	cb_conf.comp_swap = 0; /* ABGR */
 	break;
-    case PICT_b8g8r8a8:
-    case PICT_b8g8r8x8:
+    case PIXMAN_b8g8r8a8:
+    case PIXMAN_b8g8r8x8:
 	cb_conf.comp_swap = 3; /* BGRA */
 	break;
-    case PICT_r5g6b5:
+    case PIXMAN_r5g6b5:
 	cb_conf.comp_swap = 2; /* RGB */
 	break;
-    case PICT_a8:
+    case PIXMAN_a8:
 	cb_conf.comp_swap = 3; /* A */
 	break;
     }

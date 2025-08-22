@@ -60,6 +60,8 @@
 
 #include <X11/extensions/damageproto.h>
 
+#include <fb.h>
+
 #include "radeon_chipinfo_gen.h"
 
 #include "radeon_bo_gem.h"
@@ -107,7 +109,7 @@ void radeon_cs_flush_indirect(ScrnInfoPtr pScrn)
 
 #ifdef USE_GLAMOR
     if (info->use_glamor) {
-	glamor_block_handler(pScrn->pScreen);
+    /* Pending operations have already been flushed in glamor_close_screen() */
 	return;
     }
 #endif
@@ -187,7 +189,7 @@ static Bool RADEONGetRec(ScrnInfoPtr pScrn)
 {
     if (pScrn->driverPrivate) return TRUE;
 
-    pScrn->driverPrivate = xnfcalloc(sizeof(RADEONInfoRec), 1);
+    pScrn->driverPrivate = XNFcallocarray(sizeof(RADEONInfoRec), 1);
     return TRUE;
 }
 
@@ -1734,11 +1736,7 @@ static Bool RADEONCreateWindow_oneshot(WindowPtr pWin)
 }
 
 /* When the root window is mapped, set the initial modes */
-void RADEONWindowExposures_oneshot(WindowPtr pWin, RegionPtr pRegion
-#if XORG_VERSION_CURRENT < XORG_VERSION_NUMERIC(1,16,99,901,0)
-				   , RegionPtr pBSRegion
-#endif
-				   )
+void RADEONWindowExposures_oneshot(WindowPtr pWin, RegionPtr pRegion)
 {
     ScreenPtr pScreen = pWin->drawable.pScreen;
     ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
@@ -1748,11 +1746,7 @@ void RADEONWindowExposures_oneshot(WindowPtr pWin, RegionPtr pRegion
 	ErrorF("%s called for non-root window %p\n", __func__, pWin);
 
     pScreen->WindowExposures = info->WindowExposures;
-#if XORG_VERSION_CURRENT < XORG_VERSION_NUMERIC(1,16,99,901,0)
-    pScreen->WindowExposures(pWin, pRegion, pBSRegion);
-#else
     pScreen->WindowExposures(pWin, pRegion);
-#endif
 
     radeon_finish(pScrn, info->front_buffer);
     drmmode_set_desired_modes(pScrn, &info->drmmode, TRUE);
@@ -2397,10 +2391,7 @@ Bool RADEONScreenInit_KMS(ScreenPtr pScreen, int argc, char **argv)
 #endif
 
     if (!pScreen->isGPU) {
-	if (xorgGetVersion() >= XORG_VERSION_NUMERIC(1,18,3,0,0))
-	    value = info->use_glamor;
-	else
-	    value = FALSE;
+	value = info->use_glamor;
 	from = X_DEFAULT;
 
 	if (!info->r600_shadow_fb) {
