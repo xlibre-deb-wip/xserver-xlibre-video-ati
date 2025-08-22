@@ -74,36 +74,36 @@ struct formatinfo {
  * TXFORMAT_Y8 expands to (Y,Y,Y,1).  TXFORMAT_I8 expands to (I,I,I,I)
  */
 static struct formatinfo R100TexFormats[] = {
-	{PICT_a8r8g8b8,	RADEON_TXFORMAT_ARGB8888 | RADEON_TXFORMAT_ALPHA_IN_MAP},
-	{PICT_x8r8g8b8,	RADEON_TXFORMAT_ARGB8888},
-	{PICT_r5g6b5,	RADEON_TXFORMAT_RGB565},
-	{PICT_a1r5g5b5,	RADEON_TXFORMAT_ARGB1555 | RADEON_TXFORMAT_ALPHA_IN_MAP},
-	{PICT_x1r5g5b5,	RADEON_TXFORMAT_ARGB1555},
-	{PICT_a8,	RADEON_TXFORMAT_I8 | RADEON_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_a8r8g8b8,	RADEON_TXFORMAT_ARGB8888 | RADEON_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_x8r8g8b8,	RADEON_TXFORMAT_ARGB8888},
+    {PIXMAN_r5g6b5,	RADEON_TXFORMAT_RGB565},
+    {PIXMAN_a1r5g5b5,	RADEON_TXFORMAT_ARGB1555 | RADEON_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_x1r5g5b5,	RADEON_TXFORMAT_ARGB1555},
+    {PIXMAN_a8,	RADEON_TXFORMAT_I8 | RADEON_TXFORMAT_ALPHA_IN_MAP},
 };
 
 static struct formatinfo R200TexFormats[] = {
-    {PICT_a8r8g8b8,	R200_TXFORMAT_ARGB8888 | R200_TXFORMAT_ALPHA_IN_MAP},
-    {PICT_x8r8g8b8,	R200_TXFORMAT_ARGB8888},
-    {PICT_a8b8g8r8,	R200_TXFORMAT_ABGR8888 | R200_TXFORMAT_ALPHA_IN_MAP},
-    {PICT_x8b8g8r8,	R200_TXFORMAT_ABGR8888},
-    {PICT_r5g6b5,	R200_TXFORMAT_RGB565},
-    {PICT_a1r5g5b5,	R200_TXFORMAT_ARGB1555 | R200_TXFORMAT_ALPHA_IN_MAP},
-    {PICT_x1r5g5b5,	R200_TXFORMAT_ARGB1555},
-    {PICT_a8,		R200_TXFORMAT_I8 | R200_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_a8r8g8b8,	R200_TXFORMAT_ARGB8888 | R200_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_x8r8g8b8,	R200_TXFORMAT_ARGB8888},
+    {PIXMAN_a8b8g8r8,	R200_TXFORMAT_ABGR8888 | R200_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_x8b8g8r8,	R200_TXFORMAT_ABGR8888},
+    {PIXMAN_r5g6b5,	R200_TXFORMAT_RGB565},
+    {PIXMAN_a1r5g5b5,	R200_TXFORMAT_ARGB1555 | R200_TXFORMAT_ALPHA_IN_MAP},
+    {PIXMAN_x1r5g5b5,	R200_TXFORMAT_ARGB1555},
+    {PIXMAN_a8,		R200_TXFORMAT_I8 | R200_TXFORMAT_ALPHA_IN_MAP},
 };
 
 static struct formatinfo R300TexFormats[] = {
-    {PICT_a8r8g8b8,	R300_EASY_TX_FORMAT(X, Y, Z, W, W8Z8Y8X8)},
-    {PICT_x8r8g8b8,	R300_EASY_TX_FORMAT(X, Y, Z, ONE, W8Z8Y8X8)},
-    {PICT_a8b8g8r8,	R300_EASY_TX_FORMAT(Z, Y, X, W, W8Z8Y8X8)},
-    {PICT_x8b8g8r8,	R300_EASY_TX_FORMAT(Z, Y, X, ONE, W8Z8Y8X8)},
-    {PICT_b8g8r8a8,	R300_EASY_TX_FORMAT(W, Z, Y, X, W8Z8Y8X8)},
-    {PICT_b8g8r8x8,	R300_EASY_TX_FORMAT(W, Z, Y, ONE, W8Z8Y8X8)},
-    {PICT_r5g6b5,	R300_EASY_TX_FORMAT(X, Y, Z, ONE, Z5Y6X5)},
-    {PICT_a1r5g5b5,	R300_EASY_TX_FORMAT(X, Y, Z, W, W1Z5Y5X5)},
-    {PICT_x1r5g5b5,	R300_EASY_TX_FORMAT(X, Y, Z, ONE, W1Z5Y5X5)},
-    {PICT_a8,		R300_EASY_TX_FORMAT(ZERO, ZERO, ZERO, X, X8)},
+    {PIXMAN_a8r8g8b8,	R300_EASY_TX_FORMAT(X, Y, Z, W, W8Z8Y8X8)},
+    {PIXMAN_x8r8g8b8,	R300_EASY_TX_FORMAT(X, Y, Z, ONE, W8Z8Y8X8)},
+    {PIXMAN_a8b8g8r8,	R300_EASY_TX_FORMAT(Z, Y, X, W, W8Z8Y8X8)},
+    {PIXMAN_x8b8g8r8,	R300_EASY_TX_FORMAT(Z, Y, X, ONE, W8Z8Y8X8)},
+    {PIXMAN_b8g8r8a8,	R300_EASY_TX_FORMAT(W, Z, Y, X, W8Z8Y8X8)},
+    {PIXMAN_b8g8r8x8,	R300_EASY_TX_FORMAT(W, Z, Y, ONE, W8Z8Y8X8)},
+    {PIXMAN_r5g6b5,	R300_EASY_TX_FORMAT(X, Y, Z, ONE, Z5Y6X5)},
+    {PIXMAN_a1r5g5b5,	R300_EASY_TX_FORMAT(X, Y, Z, W, W1Z5Y5X5)},
+    {PIXMAN_x1r5g5b5,	R300_EASY_TX_FORMAT(X, Y, Z, ONE, W1Z5Y5X5)},
+    {PIXMAN_a8,		R300_EASY_TX_FORMAT(ZERO, ZERO, ZERO, X, X8)},
 };
 
 /* Common Radeon setup code */
@@ -111,18 +111,18 @@ static struct formatinfo R300TexFormats[] = {
 static Bool RADEONGetDestFormat(PicturePtr pDstPicture, uint32_t *dst_format)
 {
     switch (pDstPicture->format) {
-    case PICT_a8r8g8b8:
-    case PICT_x8r8g8b8:
+    case PIXMAN_a8r8g8b8:
+    case PIXMAN_x8r8g8b8:
 	*dst_format = RADEON_COLOR_FORMAT_ARGB8888;
 	break;
-    case PICT_r5g6b5:
+    case PIXMAN_r5g6b5:
 	*dst_format = RADEON_COLOR_FORMAT_RGB565;
 	break;
-    case PICT_a1r5g5b5:
-    case PICT_x1r5g5b5:
+    case PIXMAN_a1r5g5b5:
+    case PIXMAN_x1r5g5b5:
 	*dst_format = RADEON_COLOR_FORMAT_ARGB1555;
 	break;
-    case PICT_a8:
+    case PIXMAN_a8:
 	*dst_format = RADEON_COLOR_FORMAT_RGB8;
 	break;
     default:
@@ -136,22 +136,22 @@ static Bool RADEONGetDestFormat(PicturePtr pDstPicture, uint32_t *dst_format)
 static Bool R300GetDestFormat(PicturePtr pDstPicture, uint32_t *dst_format)
 {
     switch (pDstPicture->format) {
-    case PICT_a8r8g8b8:
-    case PICT_x8r8g8b8:
-    case PICT_a8b8g8r8:
-    case PICT_x8b8g8r8:
-    case PICT_b8g8r8a8:
-    case PICT_b8g8r8x8:
+    case PIXMAN_a8r8g8b8:
+    case PIXMAN_x8r8g8b8:
+    case PIXMAN_a8b8g8r8:
+    case PIXMAN_x8b8g8r8:
+    case PIXMAN_b8g8r8a8:
+    case PIXMAN_b8g8r8x8:
 	*dst_format = R300_COLORFORMAT_ARGB8888;
 	break;
-    case PICT_r5g6b5:
+    case PIXMAN_r5g6b5:
 	*dst_format = R300_COLORFORMAT_RGB565;
 	break;
-    case PICT_a1r5g5b5:
-    case PICT_x1r5g5b5:
+    case PIXMAN_a1r5g5b5:
+    case PIXMAN_x1r5g5b5:
 	*dst_format = R300_COLORFORMAT_ARGB1555;
 	break;
-    case PICT_a8:
+    case PIXMAN_a8:
 	*dst_format = R300_COLORFORMAT_I8;
 	break;
     default:
@@ -171,7 +171,7 @@ static uint32_t RADEONGetBlendCntl(int op, PicturePtr pMask, uint32_t dst_format
     /* If there's no dst alpha channel, adjust the blend op so that we'll treat
      * it as always 1.
      */
-    if (PICT_FORMAT_A(dst_format) == 0 && RadeonBlendOp[op].dst_alpha) {
+    if (PIXMAN_FORMAT_A(dst_format) == 0 && RadeonBlendOp[op].dst_alpha) {
 	if (sblend == RADEON_SRC_BLEND_GL_DST_ALPHA)
 	    sblend = RADEON_SRC_BLEND_GL_ONE;
 	else if (sblend == RADEON_SRC_BLEND_GL_ONE_MINUS_DST_ALPHA)
@@ -334,8 +334,8 @@ static Bool R100CheckCompositeTexture(PicturePtr pPict,
      * matter. I have not, however, verified that the X server always does such
      * clipping.
      */
-    if (pPict->transform != 0 && repeatType == RepeatNone && PICT_FORMAT_A(pPict->format) == 0) {
-	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PICT_FORMAT_A(pDstPict->format) == 0)))
+    if (pPict->transform != 0 && repeatType == RepeatNone && PIXMAN_FORMAT_A(pPict->format) == 0) {
+	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PIXMAN_FORMAT_A(pDstPict->format) == 0)))
 	    RADEON_FALLBACK(("REPEAT_NONE unsupported for transformed xRGB source\n"));
     }
 
@@ -589,7 +589,7 @@ static Bool R100PrepareComposite(int op,
     if (!RADEONGetDestFormat(pDstPicture, &dst_format))
 	return FALSE;
 
-    if (pDstPicture->format == PICT_a8 && RadeonBlendOp[op].dst_alpha)
+    if (pDstPicture->format == PIXMAN_a8 && RadeonBlendOp[op].dst_alpha)
 	RADEON_FALLBACK(("Can't dst alpha blend A8\n"));
 
     pixel_shift = pDst->drawable.bitsPerPixel >> 4;
@@ -655,11 +655,11 @@ static Bool R100PrepareComposite(int op,
     cblend = RADEON_BLEND_CTL_ADD | RADEON_CLAMP_TX | RADEON_COLOR_ARG_C_ZERO;
     ablend = RADEON_BLEND_CTL_ADD | RADEON_CLAMP_TX | RADEON_ALPHA_ARG_C_ZERO;
 
-    if (pDstPicture->format == PICT_a8 ||
+    if (pDstPicture->format == PIXMAN_a8 ||
 	(pMask && pMaskPicture->componentAlpha && RadeonBlendOp[op].src_alpha))
     {
 	cblend |= RADEON_COLOR_ARG_A_T0_ALPHA;
-    } else if (pSrcPicture->format == PICT_a8)
+    } else if (pSrcPicture->format == PIXMAN_a8)
 	cblend |= RADEON_COLOR_ARG_A_ZERO;
     else
 	cblend |= RADEON_COLOR_ARG_A_T0_COLOR;
@@ -667,7 +667,7 @@ static Bool R100PrepareComposite(int op,
 
     if (pMask) {
 	if (pMaskPicture->componentAlpha &&
-	    pDstPicture->format != PICT_a8)
+	    pDstPicture->format != PIXMAN_a8)
 	    cblend |= RADEON_COLOR_ARG_B_T1_COLOR;
 	else
 	    cblend |= RADEON_COLOR_ARG_B_T1_ALPHA;
@@ -731,8 +731,8 @@ static Bool R200CheckCompositeTexture(PicturePtr pPict,
      * matter. I have not, however, verified that the X server always does such
      * clipping.
      */
-    if (pPict->transform != 0 && repeatType == RepeatNone && PICT_FORMAT_A(pPict->format) == 0) {
-	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PICT_FORMAT_A(pDstPict->format) == 0)))
+    if (pPict->transform != 0 && repeatType == RepeatNone && PIXMAN_FORMAT_A(pPict->format) == 0) {
+	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PIXMAN_FORMAT_A(pDstPict->format) == 0)))
 	    RADEON_FALLBACK(("REPEAT_NONE unsupported for transformed xRGB source\n"));
     }
 
@@ -951,7 +951,7 @@ static Bool R200PrepareComposite(int op, PicturePtr pSrcPicture,
     if (!RADEONGetDestFormat(pDstPicture, &dst_format))
 	return FALSE;
 
-    if (pDstPicture->format == PICT_a8 && RadeonBlendOp[op].dst_alpha)
+    if (pDstPicture->format == PIXMAN_a8 && RadeonBlendOp[op].dst_alpha)
 	RADEON_FALLBACK(("Can't dst alpha blend A8\n"));
 
     pixel_shift = pDst->drawable.bitsPerPixel >> 4;
@@ -1030,11 +1030,11 @@ static Bool R200PrepareComposite(int op, PicturePtr pSrcPicture,
     cblend = R200_TXC_OP_MADD | R200_TXC_ARG_C_ZERO;
     ablend = R200_TXA_OP_MADD | R200_TXA_ARG_C_ZERO;
 
-    if (pDstPicture->format == PICT_a8 ||
+    if (pDstPicture->format == PIXMAN_a8 ||
 	(pMask && pMaskPicture->componentAlpha && RadeonBlendOp[op].src_alpha))
     {
 	cblend |= R200_TXC_ARG_A_R0_ALPHA;
-    } else if (pSrcPicture->format == PICT_a8)
+    } else if (pSrcPicture->format == PIXMAN_a8)
 	cblend |= R200_TXC_ARG_A_ZERO;
     else
 	cblend |= R200_TXC_ARG_A_R0_COLOR;
@@ -1042,7 +1042,7 @@ static Bool R200PrepareComposite(int op, PicturePtr pSrcPicture,
 
     if (pMask) {
 	if (pMaskPicture->componentAlpha &&
-	    pDstPicture->format != PICT_a8)
+	    pDstPicture->format != PIXMAN_a8)
 	    cblend |= R200_TXC_ARG_B_R1_COLOR;
 	else
 	    cblend |= R200_TXC_ARG_B_R1_ALPHA;
@@ -1113,8 +1113,8 @@ static Bool R300CheckCompositeTexture(PicturePtr pPict,
      * matter. I have not, however, verified that the X server always does such
      * clipping.
      */
-    if (pPict->transform != 0 && repeatType == RepeatNone && PICT_FORMAT_A(pPict->format) == 0) {
-	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PICT_FORMAT_A(pDstPict->format) == 0)))
+    if (pPict->transform != 0 && repeatType == RepeatNone && PIXMAN_FORMAT_A(pPict->format) == 0) {
+	if (!(((op == PictOpSrc) || (op == PictOpClear)) && (PIXMAN_FORMAT_A(pDstPict->format) == 0)))
 	    RADEON_FALLBACK(("REPEAT_NONE unsupported for transformed xRGB source\n"));
     }
 
@@ -1594,8 +1594,8 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 
     /* shader output swizzling */
     switch (pDstPicture->format) {
-    case PICT_a8r8g8b8:
-    case PICT_x8r8g8b8:
+    case PIXMAN_a8r8g8b8:
+    case PIXMAN_x8r8g8b8:
     default:
 	output_fmt = (R300_OUT_FMT_C4_8 |
 		      R300_OUT_FMT_C0_SEL_BLUE |
@@ -1603,23 +1603,23 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 		      R300_OUT_FMT_C2_SEL_RED |
 		      R300_OUT_FMT_C3_SEL_ALPHA);
 	break;
-    case PICT_a8b8g8r8:
-    case PICT_x8b8g8r8:
+    case PIXMAN_a8b8g8r8:
+    case PIXMAN_x8b8g8r8:
 	output_fmt = (R300_OUT_FMT_C4_8 |
 		      R300_OUT_FMT_C0_SEL_RED |
 		      R300_OUT_FMT_C1_SEL_GREEN |
 		      R300_OUT_FMT_C2_SEL_BLUE |
 		      R300_OUT_FMT_C3_SEL_ALPHA);
 	break;
-    case PICT_b8g8r8a8:
-    case PICT_b8g8r8x8:
+    case PIXMAN_b8g8r8a8:
+    case PIXMAN_b8g8r8x8:
 	output_fmt = (R300_OUT_FMT_C4_8 |
 		      R300_OUT_FMT_C0_SEL_ALPHA |
 		      R300_OUT_FMT_C1_SEL_RED |
 		      R300_OUT_FMT_C2_SEL_GREEN |
 		      R300_OUT_FMT_C3_SEL_BLUE);
 	break;
-    case PICT_a8:
+    case PIXMAN_a8:
 	output_fmt = (R300_OUT_FMT_C4_8 |
 		      R300_OUT_FMT_C0_SEL_ALPHA);
 	break;
@@ -1627,12 +1627,12 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 
     /* setup pixel shader */
     if (IS_R300_3D) {
-	if (PICT_FORMAT_RGB(pSrcPicture->format) == 0)
+	if (PIXMAN_FORMAT_RGB(pSrcPicture->format) == 0)
 	    src_color = R300_ALU_RGB_0_0;
 	else
 	    src_color = R300_ALU_RGB_SRC0_RGB;
 
-	if (PICT_FORMAT_A(pSrcPicture->format) == 0)
+	if (PIXMAN_FORMAT_A(pSrcPicture->format) == 0)
 	    src_alpha = R300_ALU_ALPHA_1_0;
 	else
 	    src_alpha = R300_ALU_ALPHA_SRC0_A;
@@ -1640,7 +1640,7 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 	if (pMask) {
 	    if (pMaskPicture->componentAlpha) {
 		if (RadeonBlendOp[op].src_alpha) {
-		    if (PICT_FORMAT_A(pSrcPicture->format) == 0)
+		    if (PIXMAN_FORMAT_A(pSrcPicture->format) == 0)
 			src_color = R300_ALU_RGB_1_0;
 		    else
 			src_color = R300_ALU_RGB_SRC0_AAA;
@@ -1648,12 +1648,12 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 		    src_color = R300_ALU_RGB_SRC0_RGB;
 		mask_color = R300_ALU_RGB_SRC1_RGB;
 	    } else {
-		if (PICT_FORMAT_A(pMaskPicture->format) == 0)
+		if (PIXMAN_FORMAT_A(pMaskPicture->format) == 0)
 		    mask_color = R300_ALU_RGB_1_0;
 		else
 		    mask_color = R300_ALU_RGB_SRC1_AAA;
 	    }
-	    if (PICT_FORMAT_A(pMaskPicture->format) == 0)
+	    if (PIXMAN_FORMAT_A(pMaskPicture->format) == 0)
 		mask_alpha = R300_ALU_ALPHA_1_0;
 	    else
 		mask_alpha = R300_ALU_ALPHA_SRC1_A;
@@ -1805,7 +1805,7 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 		       R300_ALU_ALPHA_CLAMP));
 	ADVANCE_RING();
     } else {
-	if (PICT_FORMAT_RGB(pSrcPicture->format) == 0)
+	if (PIXMAN_FORMAT_RGB(pSrcPicture->format) == 0)
 	    src_color = (R500_ALU_RGB_R_SWIZ_A_0 |
 			 R500_ALU_RGB_G_SWIZ_A_0 |
 			 R500_ALU_RGB_B_SWIZ_A_0);
@@ -1814,7 +1814,7 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 			 R500_ALU_RGB_G_SWIZ_A_G |
 			 R500_ALU_RGB_B_SWIZ_A_B);
 
-	if (PICT_FORMAT_A(pSrcPicture->format) == 0)
+	if (PIXMAN_FORMAT_A(pSrcPicture->format) == 0)
 	    src_alpha = R500_ALPHA_SWIZ_A_1;
 	else
 	    src_alpha = R500_ALPHA_SWIZ_A_A;
@@ -1822,7 +1822,7 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 	if (pMask) {
 	    if (pMaskPicture->componentAlpha) {
 		if (RadeonBlendOp[op].src_alpha) {
-		    if (PICT_FORMAT_A(pSrcPicture->format) == 0)
+		    if (PIXMAN_FORMAT_A(pSrcPicture->format) == 0)
 			src_color = (R500_ALU_RGB_R_SWIZ_A_1 |
 				     R500_ALU_RGB_G_SWIZ_A_1 |
 				     R500_ALU_RGB_B_SWIZ_A_1);
@@ -1839,7 +1839,7 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 			      R500_ALU_RGB_G_SWIZ_B_G |
 			      R500_ALU_RGB_B_SWIZ_B_B);
 	    } else {
-		if (PICT_FORMAT_A(pMaskPicture->format) == 0)
+		if (PIXMAN_FORMAT_A(pMaskPicture->format) == 0)
 		    mask_color = (R500_ALU_RGB_R_SWIZ_B_1 |
 				  R500_ALU_RGB_G_SWIZ_B_1 |
 				  R500_ALU_RGB_B_SWIZ_B_1);
@@ -1848,7 +1848,7 @@ static Bool R300PrepareComposite(int op, PicturePtr pSrcPicture,
 				  R500_ALU_RGB_G_SWIZ_B_A |
 				  R500_ALU_RGB_B_SWIZ_B_A);
 	    }
-	    if (PICT_FORMAT_A(pMaskPicture->format) == 0)
+	    if (PIXMAN_FORMAT_A(pMaskPicture->format) == 0)
 		mask_alpha = R500_ALPHA_SWIZ_B_1;
 	    else
 		mask_alpha = R500_ALPHA_SWIZ_B_A;

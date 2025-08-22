@@ -81,13 +81,8 @@ radeon_glamor_pre_init(ScrnInfoPtr scrn)
 
 	s = xf86GetOptValString(info->Options, OPTION_ACCELMETHOD);
 	if (!s) {
-		if (xorgGetVersion() >= XORG_VERSION_NUMERIC(1,18,3,0,0)) {
-			if (info->ChipFamily < CHIP_FAMILY_R600)
-				return FALSE;
-		} else {
-			if (info->ChipFamily < CHIP_FAMILY_TAHITI)
-				return FALSE;
-		}
+		if (info->ChipFamily < CHIP_FAMILY_R600)
+			return FALSE;
 	}
 
 	if (s && strcasecmp(s, "glamor") != 0) {
@@ -109,33 +104,12 @@ radeon_glamor_pre_init(ScrnInfoPtr scrn)
 			   "glamor may not work (well) with GPUs < RV515.\n");
 	}
 
-#if XORG_VERSION_CURRENT < XORG_VERSION_NUMERIC(1,20,99,0,0)
-	if (scrn->depth < 24) {
-#else
 	if (scrn->depth < 15) {
-#endif
 		xf86DrvMsg(scrn->scrnIndex, s ? X_ERROR : X_WARNING,
 			   "Depth %d not supported with glamor, disabling\n",
 			   scrn->depth);
 		return FALSE;
 	}
-
-	if (scrn->depth == 30 &&
-	    xorgGetVersion() < XORG_VERSION_NUMERIC(1,19,99,1,0)) {
-		xf86DrvMsg(scrn->scrnIndex, X_WARNING,
-			   "Depth 30 is not supported by GLAMOR with Xorg < "
-			   "1.19.99.1\n");
-		return FALSE;
-	}
-
-#if XORG_VERSION_CURRENT < XORG_VERSION_NUMERIC(1,15,0,0,0)
-	if (!xf86LoaderCheckSymbol("glamor_egl_init")) {
-		xf86DrvMsg(scrn->scrnIndex, s ? X_ERROR : X_WARNING,
-			   "glamor requires Load \"glamoregl\" in "
-			   "Section \"Module\", disabling.\n");
-		return FALSE;
-	}
-#endif
 
 	info->gbm = gbm_create_device(pRADEONEnt->fd);
 	if (!info->gbm) {
@@ -182,11 +156,8 @@ radeon_glamor_create_textured_pixmap(PixmapPtr pixmap, struct radeon_buffer *bo)
 
 	if (bo->flags & RADEON_BO_FLAGS_GBM) {
 		return glamor_egl_create_textured_pixmap_from_gbm_bo(pixmap,
-								     bo->bo.gbm
-#if XORG_VERSION_CURRENT > XORG_VERSION_NUMERIC(1,19,99,903,0)
-								     , FALSE
-#endif
-								     );
+								     bo->bo.gbm,
+								     FALSE);
 	} else {
 		return glamor_egl_create_textured_pixmap(pixmap,
 							 bo->bo.radeon->handle,
@@ -196,31 +167,20 @@ radeon_glamor_create_textured_pixmap(PixmapPtr pixmap, struct radeon_buffer *bo)
 
 static Bool radeon_glamor_destroy_pixmap(PixmapPtr pixmap)
 {
-#ifndef HAVE_GLAMOR_EGL_DESTROY_TEXTURED_PIXMAP
 	ScreenPtr screen = pixmap->drawable.pScreen;
 	RADEONInfoPtr info = RADEONPTR(xf86ScreenToScrn(screen));
 	Bool ret = TRUE;
-#endif
 
-	if (pixmap->refcnt == 1) {
-#ifdef HAVE_GLAMOR_EGL_DESTROY_TEXTURED_PIXMAP
-		glamor_egl_destroy_textured_pixmap(pixmap);
-#endif
+	if (pixmap->refcnt == 1)
 		radeon_set_pixmap_bo(pixmap, NULL);
-	}
 
-#ifdef HAVE_GLAMOR_EGL_DESTROY_TEXTURED_PIXMAP
-	fbDestroyPixmap(pixmap);
-	return TRUE;
-#else
-	screen->DestroyPixmap = info->glamor.SavedDestroyPixmap;
-	if (screen->DestroyPixmap(pixmap))
+	if (info->glamor.SavedDestroyPixmap) {
+		screen->DestroyPixmap = info->glamor.SavedDestroyPixmap;
 		ret = screen->DestroyPixmap(pixmap);
-	info->glamor.SavedDestroyPixmap = screen->DestroyPixmap;
+	}
 	screen->DestroyPixmap = radeon_glamor_destroy_pixmap;
 
 	return ret;
-#endif
 }
 
 static PixmapPtr
@@ -436,18 +396,14 @@ radeon_glamor_init(ScreenPtr screen)
 	ScrnInfoPtr scrn = xf86ScreenToScrn(screen);
 	RADEONInfoPtr info = RADEONPTR(scrn);
 #ifdef RENDER
-#ifdef HAVE_FBGLYPHS
 	UnrealizeGlyphProcPtr SavedUnrealizeGlyph = NULL;
-#endif
 	PictureScreenPtr ps = NULL;
 
 	if (info->shadow_primary) {
 		ps = GetPictureScreenIfSet(screen);
 
 		if (ps) {
-#ifdef HAVE_FBGLYPHS
 			SavedUnrealizeGlyph = ps->UnrealizeGlyph;
-#endif
 			info->glamor.SavedGlyphs = ps->Glyphs;
 			info->glamor.SavedTriangles = ps->Triangles;
 			info->glamor.SavedTrapezoids = ps->Trapezoids;
@@ -463,19 +419,13 @@ radeon_glamor_init(ScreenPtr screen)
 		return FALSE;
 	}
 
-	if (!glamor_egl_init_textured_pixmap(screen)) {
-		xf86DrvMsg(scrn->scrnIndex, X_ERROR,
-			   "Failed to initialize textured pixmap of screen for glamor.\n");
-		return FALSE;
-	}
-
 	if (!dixRegisterPrivateKey(&glamor_pixmap_index, PRIVATE_PIXMAP, 0))
 		return FALSE;
 
 	if (info->shadow_primary)
 		radeon_glamor_screen_init(screen);
 
-#if defined(RENDER) && defined(HAVE_FBGLYPHS)
+#if defined(RENDER)
 	/* For ShadowPrimary, we need fbUnrealizeGlyph instead of
 	 * glamor_unrealize_glyph
 	 */
