@@ -1,3 +1,11 @@
+xserver-xlibre-video-ati (1:22.0.0.2-1) unstable; urgency=medium
+
+  * debian/watch: Update upstream prefix to xlibre
+  * New upstream version 22.0.0.2
+  * rules: Specify xorg module directory
+
+ -- apebl <a@pebl.cc>  Sat, 23 Aug 2025 01:07:50 +0000
+
 xserver-xlibre-video-ati (1:22.0.0.1-2) unstable; urgency=medium
 
   * debian/control: Pin versions in Provides fields
